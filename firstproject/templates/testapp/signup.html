@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+{% extends 'testapp/wish.html' %}
+{% block body_block %}
+
+<div class="jumbotron">
+    <div class="container" align="center">
+        <h1>Pleasse Signup To get quote...</h1>
+        <form method="POST">
+            {{form.as_p}}
+            {% csrf_token %}
+            <input type="submit" value="SignUp">
+        </form>
+    </div>
+</div>
+{% endblock %}

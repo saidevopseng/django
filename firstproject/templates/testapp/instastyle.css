@@ -1,0 +1,140 @@
+body {
+    font-family: Arial, sans-serif;
+    background-color: #fafafa;
+    margin: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+}
+
+.container {
+    width: 350px;
+    background-color: white;
+    border: 1px solid #dbdbdb;
+    border-radius: 8px;
+    padding: 20px;
+    text-align: center;
+}
+
+h1.logo {
+    font-family: 'Pacifico', cursive; /* Instagram-like font */
+    font-size: 48px;
+    margin: 10px 0;
+    color: #000;
+}
+
+.form-container {
+    display: none;
+}
+
+.form-container.active {
+    display: block;
+}
+
+input {
+    width: 100%;
+    padding: 10px;
+    margin: 10px 0;
+    border: 1px solid #dbdbdb;
+    border-radius: 4px;
+    font-size: 14px;
+    background: #fafafa;
+}
+
+button {
+    width: 100%;
+    padding: 10px;
+    background-color: #3897f0;
+    border: none;
+    border-radius: 4px;
+    color: white;
+    font-size: 14px;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+button:hover {
+    background-color: #3178c6;
+}
+
+.facebook-login {
+    background-color: transparent;
+    color: #3897f0;
+    font-weight: bold;
+    border: none;
+    margin: 10px 0;
+}
+
+.facebook-login:hover {
+    text-decoration: underline;
+}
+
+.divider {
+    display: flex;
+    align-items: center;
+    margin: 15px 0;
+}
+
+.divider span {
+    font-size: 14px;
+    color: #8e8e8e;
+}
+
+.divider:before,
+.divider:after {
+    content: "";
+    flex: 1;
+    height: 1px;
+    background-color: #dbdbdb;
+    margin: 0 10px;
+}
+
+.forgot-password {
+    display: block;
+    font-size: 12px;
+    margin-top: 10px;
+    color: #00376b;
+    text-decoration: none;
+}
+
+.forgot-password:hover {
+    text-decoration: underline;
+}
+
+.footer {
+    margin-top: 20px;
+    font-size: 14px;
+}
+
+.footer a {
+    color: #3897f0;
+    text-decoration: none;
+}
+
+.footer a:hover {
+    text-decoration: underline;
+}
+
+.hidden {
+    display: none;
+}
+
+.forgot-password {
+    display: block;
+    font-size: 12px;
+    margin: 10px 0 20px; /* Add more space below the link */
+    color: #00376b;
+    text-decoration: none;
+}
+
+.footer {
+    margin-top: 20px; /* This adds spacing between the password link and footer */
+    font-size: 14px;
+    color: #8e8e8e;
+}
+
+.footer a {
+    color: #3897f0;
+    text-decoration: none;
+}

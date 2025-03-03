@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Saibook</title>
+    <style>
+        /* General styles */
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f0f2f5;
+        }
+
+        /* Header */
+        .header {
+            background-color: #4267B2;
+            color: white;
+            padding: 10px 20px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
+
+        .header .logo {
+            font-size: 24px;
+            font-weight: bold;
+        }
+
+        .header .search-box {
+            flex-grow: 1;
+            margin: 0 20px;
+        }
+
+        .header .search-box input {
+            width: 100%;
+            padding: 8px;
+            border: none;
+            border-radius: 20px;
+            outline: none;
+        }
+
+        .header .menu {
+            display: flex;
+            gap: 20px;
+        }
+
+        .header .menu a {
+            color: white;
+            text-decoration: none;
+            font-size: 16px;
+        }
+
+        /* Layout */
+        .container {
+            display: flex;
+            margin-top: 20px;
+            padding: 20px;
+        }
+
+        /* Sidebar */
+        .sidebar {
+            flex: 1;
+            max-width: 250px;
+            background-color: white;
+            border-radius: 8px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            padding: 20px;
+        }
+
+        .sidebar ul {
+            list-style-type: none;
+            padding: 0;
+        }
+
+        .sidebar ul li {
+            margin-bottom: 15px;
+            font-size: 18px;
+        }
+
+        .sidebar ul li a {
+            text-decoration: none;
+            color: #555;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        /* Feed */
+        .feed {
+            flex: 3;
+            margin: 0 20px;
+        }
+
+        .feed .post-box {
+            background-color: white;
+            border-radius: 8px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            padding: 20px;
+            margin-bottom: 20px;
+        }
+
+        .feed .post-box textarea {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 8px;
+            resize: none;
+            outline: none;
+        }
+
+        .feed .post-box button {
+            margin-top: 10px;
+            padding: 10px 20px;
+            background-color: #4267B2;
+            color: white;
+            border: none;
+            border-radius: 20px;
+            cursor: pointer;
+        }
+
+        .feed .post {
+            background-color: white;
+            border-radius: 8px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            padding: 20px;
+            margin-bottom: 20px;
+        }
+
+        .feed .post h4 {
+            margin: 0 0 10px;
+            font-size: 18px;
+        }
+
+        .feed .post p {
+            margin: 0;
+            font-size: 16px;
+            color: #555;
+        }
+
+        /* Friend List */
+        .friend-list {
+            flex: 1;
+            max-width: 250px;
+        }
+
+        .friend-list .friends {
+            background-color: white;
+            border-radius: 8px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            padding: 20px;
+        }
+
+        .friend-list .friends h3 {
+            margin: 0 0 20px;
+        }
+
+        .friend-list .friends ul {
+            list-style-type: none;
+            padding: 0;
+        }
+
+        .friend-list .friends ul li {
+            margin-bottom: 15px;
+            font-size: 16px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .friend-list .friends ul li img {
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Header -->
+    <div class="header">
+        <div class="logo">Saibook</div>
+        <div class="search-box">
+            <input type="text" placeholder="Search Saibook...">
+        </div>
+        <div class="menu">
+            <a href="#">Home</a>
+            <a href="#">Profile</a>
+            <a href="#">Messages</a>
+        </div>
+    </div>
+
+    <!-- Main Layout -->
+    <div class="container">
+        <!-- Sidebar -->
+        <div class="sidebar">
+            <ul>
+                <li><a href="#">News Feed</a></li>
+                <li><a href="#">Messages</a></li>
+                <li><a href="#">Notifications</a></li>
+                <li><a href="#">Settings</a></li>
+            </ul>
+        </div>
+
+        <!-- Feed -->
+        <div class="feed">
+            <div class="post-box">
+                <textarea rows="3" placeholder="What's on your mind?"></textarea>
+                <button>Post</button>
+            </div>
+            <div class="post">
+                <h4>lateral entry satya</h4>
+                <p>This is a sample post. Welcome to Saibook!</p>
+            </div>
+            <div class="post">
+                <h4>Nitin Srihari</h4>
+                <p>Just enjoying a sunny day!</p>
+            </div>
+        </div>
+
+        <!-- Friend List -->
+        <div class="friend-list">
+            <div class="friends">
+                <h3>Friends</h3>
+                <ul>
+                    <li><img src="https://via.placeholder.com/30" alt="Friend 1"> Lateral entry satya</li>
+                    <li><img src="https://via.placeholder.com/30" alt="Friend 2"> Ravindra</li>
+                    <li><img src="https://via.placeholder.com/30" alt="Friend 3"> vara lakshmi</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+</body>
+</html>

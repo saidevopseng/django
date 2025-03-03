@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+{% extends 'firstapp/base.html' %}
+{% block body_block %}
+<h1>List of all companies</h1>
+<ul>
+    {% for company in company_list %}
+    <li><a href="/{{company.id}}">{{company.name}}<a/></li>
+
+    {% comment %} <li>{{company.name}}</li>
+    <li>{{company.location}}</li>
+    <li>{{company.ceo}}</li> {% endcomment %}
+    <hr>
+    {% endfor %}
+</ul>
+<a href="/create" class="btn btn-primary">Insert Company</a>
+{% endblock %}

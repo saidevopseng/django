@@ -1,0 +1,25 @@
+h1{
+    text-align: center;
+    color: red;
+}
+
+body{
+    background: white;
+    color: red;
+
+    background: url(../images/bg.avif);
+    background-repeat: no-repeat;
+    background-size: cover;
+}
+
+.navbar{
+    background: white;
+}
+
+.navbar.a{
+    color: blue;
+}
+
+li a{
+    color: red;
+}
