@@ -10247,17 +10247,1817 @@ git remote add origin https://github.com/saidevopseng/django.git
 git branch -M master
 git push -u origin master
 
+these are the steps till the repo gets uploaded into remote repo(github) from local machine to local to local repo(git)
+cd Desktop
+    cd django
+    git init
+    git add .
+    git status
+    git commit -m 'first commit by charan'
+    git status
+    git log
+
+theese are to push from local repo to github
+    git remote add origin https://github.com/saidevopseng/django.git
+    git branch -M master
+    git push -u origin master
+
 once its get uploaded to github, then do small changes and try to push to github again to just check
 git add .
-git coomit -m 'second commit by charan'
+git commit -m 'second commit by charan'
 git push -u origin master
- 
-git status
-git commit -m 'first commit by charan'
-git log
+============================================
 
-local repo stagging area remote repo
+============================================
+
+============================================
+
+============================================ 
+Java Script
+To add functionality to the html components
+
+Fullstack
+MEAN -- mongo+express+angular+node
+MERN -- mongo+express+react+node
+
+Fullstack webdevelopment with python+django
+java script developers console
+5 basic java script primitive data types
+declare variables
+the 3 most commonly used js functions
+
+java script developers console
+10+20
+
+snippets -- js develper console, python shell, python idle
+
+how to launch: browser--> right click --> inspect --> console (ctrl+shift+j or f12)
+
+to clear console -- ctrl+l or clear()
+
+5 basis js primitive data types
+1. number 
+var x=10
+undefined
+typeof x
+'number'
+x=10.5
+10.5
+typeof x
+'number'
+x= -10
+-10
+typeof x
+'number'
+
+diff between x=10 and var y=20
+x=10
+
+10
+typeof x
+'number'
+var y=20
+undefined
+typeof y
+'number'
+		
+10+20
+30
+10-20
+-10
+20/10
+2
+20*10
+200
+10**2
+100
+10.5+2.6
+13.1
+
+2. string data type
+s='charan'
+'charan'
+typeof s
+'string'
+s="charan"
+'charan'
+typeof s
+'string'
+s='''charan'''
+VM701:1 Uncaught SyntaxError: Unexpected string
+
+any sequence of characters either within the single quotes or double quotes
+'charan' or "charan"
+
++ operator acts as concatination
+'sangam'+'soft'
+
+'sangam'+'soft'
+'sangamsoft'
+'sangam'+10 -- in python it gives an error
+'sangam10'
+'sangam'+true
+'sangamtru 
+
+if both args are number type then + acts as addition
+if atleast one arguements is string type, then concatination operator
+
+how to find length of the string?
+s='sangamsoft'
+'sangamsoft'
+s.length
+10
+
+How to access characters of a string
+s
+'sangamsoft'
+s[0]
+'s'
+s[7]
+'o'
+s[-1] -- -ve supported by python not js
+undefined
+s[100] -- if index not available, we will get index error
+undefined
  
+3. boolean type:
+true/false
+True/False (in python)
+
+3.boolean
+var x=10(in python)
+var name='charan'
+var isMarried=false
+
+var x=10
+undefined
+typeof x
+'number'
+var name='charan'
+undefined
+typeof name
+'string'
+var isMarried=false
+undefined
+typeof isMarried
+'boolean 
+
+so js also a dynamically typed language
+
+variable naming convention in js
+studentMobileNumber -- camelcase(java/js)
+student_mobile_number -- snake case(python)
+student-mobile-number -- kebab case(LISP)
+pascal case also available
+
+4.undefined (variables are declared but not initialized or if the value is not available)
+var y
+undefined
+typeof y
+'number'
+var z -- not initialized
+undefined
+typeof z
+'undefine
+
+5.null (means nothing)
+if the value of the variable is null means its not pointing to any value
+
+var currentPlayer='dhoni'
+undefined
+currentPlayer
+'dhoni'
+currentPlayer=null -- if game over then no current player
+null
+currentPlayer
+null
+
+3 most commonly used methods in js
+alert()
+console.log()
+alert()
+
+1.alert()
+To display some alerts to the end user
+alert('hello charan, i am js')
+undefined
+alert(1000)
+undefined
+alert(true)
+undefined
+alert('students..prioritize your activities..short cut for success:'+100)
+
+can we use expressions in alert?
+alert(10+20)
+undefined
+alert('10'+'20')
+undefined
+
+2.console.log():
+to print messages to the developer console
+
+console.log('hello students')
+VM1895:1 hello students
+console.log(10*20)
+VM1923:1 200
+
+3.prompt()
+to get input from the end user
+name=input('enter your name:') -- in python
+
+var name=prompt('Enter your name')
+undefined
+var quote=prompt('enter your quote')
+undefined
+alert('hello'+name+',thanks for your quote:\n'+quote)
+
+separate file: .js file
+how to write js code to a separate file and configure to html
+
+create a folder javascript in C:\Users\abc\Desktop\django\
+open the above created folder in vs code
+create 2 files with the names
+test.html(C:\Users\abc\Desktop\django\javascript\test.html)
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <script type="text/javascript" src="test.js">
+
+    </script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <h1>Welcome to Sangam softsol:IT service provider</h1>
+    <!-- <script type="text/javascript" src="test.js"> -->
+</body>
+</html>
+
+test.js (C:\Users\abc\Desktop\django\javascript\test.js)
+alert('hello students good evening')
+
+we can link js file to html file using <script type="text/javascript" src="test.js">
+we can take this script tag either inside head tag or body tag
+if we are taking inside head tag then js code will be executed before processing body (first js code then html code)
+if script tag inside body then js code will be executed as part of the body execution(it will be executed with the body)
+
+test.html(C:\Users\abc\Desktop\django\javascript\test.html)
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <script type="text/javascript" src="test.js">
+
+    </script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <h1>Welcome to Sangam softsol:IT service provider</h1>
+    <!-- <script type="text/javascript" src="test.js"> -->
+</body>
+</html>
+
+test.js
+var name=prompt('Enter your name:')
+var age=prompt('enter age:')
+ageInDays=(60-age)*365
+reaminingDays=(60-age)*365
+alert('Hello'+name+'...\n your current age:'+ageInDays+'days\n you will be there on earth only'+reaminingDays+'hence enjoy every day of life ass very less number of days remaining') 
+
+Operators
+1.Arithmetic operators (+,-,*,/,%,**)
+
+10+20
+30
+20-10
+10
+10*20
+200
+20/2
+10
+20%2
+0
+20//2 -- meant for commenting, not floor division operator
+20
+
+comparison operators
+10<20
+true
+10>20
+false
+10<=20
+true
+10>=20
+false
+10==20
+false
+10!=20
+true
+
+diff between == and ===
+10==10
+true
+10=='10'
+true
+10==10.0
+true
+
+(==) here content in the variables are important not data type
+
+10===10
+true
+10==='10'
+false
+10===10.0
+true
+
+(===) here type is important
+
+recommended to use "==="
+
+true==1
+true
+false==0
+true
+null==undefined
+true
+
+true=='1'
+true
+true==='1'
+false
+false==0
+true
+false===0
+false
+null===undefined
+false
+false=='0'
+true
+false==='0'
+false 
+
+0/1
+0
+1/0
+Infinity
+0/0
+NaN
+
+10<NaN
+false
+10<=NaN
+false
+10>NaN
+false
+10>=NaN
+false
+10==NaN
+false
+NaN==NaN
+false
+
+0/1==NaN
+false
+
+Above all are false
+
+10!=NaN
+true
+NaN!=NaN
+true
+the above 2 only true
+
+Logical Operators
+&& -- AND
+|| -- OR
+! -- NOT
+
+x && y both should be true,then only it returns true
+x || y atleast one is true, it returns true
+
+C:\Users\abc>py
+Python 3.12.4 (tags/v3.12.4:8e8a4ba, Jun  6 2024, 19:30:16) [MSC v.1940 64 bit (AMD64)] on win32
+Type "help", "copyright", "credits" or "license" for more information.
+>>> bool(0)
+False
+>>> bool(1)
+True
+>>> bool(10)
+True
+>>> bool('')
+False
+>>> bool("")
+False
+
+for logical operators
+zero -- false
+non-zero -- true
+empty string -- false
+non-empty string -- true
+null,undefined,NaN -- false
+
+!true
+false
+!NaN
+true
+!null
+true
+!undefined
+true
+!0
+true
+
+x=10
+10
+y=20
+20
+x<10 && x!=5
+false
+
+!(x=='10' || x===y) && (y!=8 && x<=y)
+false
+
+
+'10'+2
+'102'
+'10'-2
+8
+'10'%2
+0
+'10'-'2'
+8
+'10'+'2'
+'102
+
+'10'+'20' -- it shoud give 30
+do type casting
+
+Number('10')+Number('20')
+30
+Number('10')+'20'
+'1020
+
+conditional statements
+if
+if-else
+if-else-if
+
+if(b){
+action if b is true
+}
+else{
+action if b is false
+}
+
+test.html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <!-- <script type="text/javascript" src="test.js"></script> -->
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <h1>Welcome to Java Script Examples</h1>
+    <script type="text/javascript" src="test.js"></script>
+</body>
+</html>
+
+test.js
+x=Number(prompt('Enter any number to check:'));
+if(x%2==0){
+    alert('given number is even');
+    console.log('the given number:'+x+'is even')
+}
+else{
+    alert('given number is odd');
+    console.log('the given number:'+x+'is odd')
+}
+
+";" is optional, as python
+=============================================
+test.html
+same as last file
+
+test.js
+var age=Number(prompt('Enter Your age:'))
+if(age>60){
+    alert('Please wait some more time definitely you will get best match')
+}else if(age<18){
+    alert('you crossed marriage age, no chance of getting marriage..')
+}else{
+    alert('Thanks for registration..you will get match details soon by mail')
+}
+
+read brand from end user and provide meaningful message
+
+
+test.js
+var brand=prompt('Enter Your favourite brand:')
+if(brand=='bmw'){
+    alert('its just ordinary in brands')
+}else if(brand=='mercedes'){
+    alert('safety with speed')
+}else if(brand=='ferrari'){
+    alert('great experience with safety features and unimaginable speed')
+}
+else{
+    alert('other brands not brands')
+}
+
+Number guess application
+test.js
+var sno=3
+var num=Number(prompt('enter your guess between 1 to 9:'))
+if(num>sno){
+    alert('its too high guess again')
+}else if(num<sno){
+    alert('its too low..guess again')
+}else{
+    alert('Congratulations..your guess matched')
+}
+
+Iterative statements
+to execute a group of statements iteratively
+DRY principle
+
+its highly recommended to follow DRY principle, if not development cost, time and length of the code increases and reduces the 
+readability
+
+in js there are 2 types of iterative statements
+while
+for
+
+while loop: as long as the condition true, then we should go for while loop (we dont know, how many times it will get executed, 
+untill the given condition false loop will keep on running)
+
+while (condition){
+body
+----
+----
+}
+
+ex: to print hello 10 times to the console
+
+var count=1
+while (count<=10){
+    console.log('hello')
+    count++
+}
+
+output
+10 test.js:3 hello
+
+print first 10 numbers
+var count=1
+while (count<=10){
+    console.log(count)
+    count++
+}
+
+output
+test.js:3 1
+test.js:3 2
+test.js:3 3
+test.js:3 4
+test.js:3 5
+test.js:3 6
+test.js:3 7
+test.js:3 8
+test.js:3 9
+test.js:3 10
+
+to print each character present in the given string
+var s=prompt('Enter any string:')
+var i=0
+while(i<s.length){
+    console.log('the character present at index:'+i+s[i])
+    i++
+}
+
+test.js:4 the character present at index:0c
+test.js:4 the character present at index:1h
+test.js:4 the character present at index:2a
+test.js:4 the character present at index:3r
+test.js:4 the character present at index:4a
+test.js:4 the character present at index:5n
+
+to print nth table
+
+var n=Number(prompt('Enter a Number:'))
+var i=1
+while(i<=10){
+    console.log(i+'*'+n+'='+(i*n))
+    i++
+}
+
+test.js:4 1*17=17
+test.js:4 2*17=34
+test.js:4 3*17=51
+test.js:4 4*17=68
+test.js:4 5*17=85
+test.js:4 6*17=102
+test.js:4 7*17=119
+test.js:4 8*17=136
+test.js:4 9*17=153
+test.js:4 10*17=170
+
+to print all numbers divisible by 3 and 5 between 100
+var n=5
+while(n<=100){
+    if(n%3==0 && n%5==0)
+    console.log(n)
+    n++
+}
+
+test.js:4 15
+test.js:4 30
+test.js:4 45
+test.js:4 60
+test.js:4 75
+test.js:4 90
+
+if we dont know number of iterations in advance then we will go for while loop
+
+write a program to read faculty name from end user until entering 'sirajsir' by using while loop
+var faculty=prompt('Enter your admiring faculty:')
+while(name!='sirajsir'){
+    var name=prompt('enter your admiring faculty:')
+}
+alert('Thanks for the confirmation of your admiring faculty:'+faculty)
+
+
+for loop: (exact iteration)-- if we know the no.of iterations in advance
+for(init;cond_check;incr_decr){
+body
+---
+---
+}
+
+ex: to print 'hello' 10 times
+for(var i=0;i<10;i++){
+    console.log('hello')
+}
+
+to print numbers from 1 to 10
+for(var i=1;i<=10;i++){
+    console.log(i)
+}
+
+to print all numbers which are divisible by 9 from 1 to 100
+for(var i=1;i<=100;i++){
+    if(i%9==0)
+    console.log(i)
+}
+
+var s=prompt('Enter any string:')
+for(var i=0;i<s.length;i++){
+    console.log(s[i])
+}
+
+while vs for
+
+secret agent application
+rules:
+first character of the name should be 's'
+the last character of favourite faculty should be 'j'
+the lucky number should be 7
+the length of favourite dish(no of characters) should be >=6
+
+test.js
+var name=prompt('Enter your name:')
+var faculty=prompt('Enter your admiring faculty name:')
+var lucky=prompt('enter your lucky number:')
+var dish=prompt('Enter your favourite dish')
+
+var nameCondition=false
+var facultyCondition=false
+var luckyCondition=false
+var dishCondition=false
+
+if (name[0]=='s'){
+    nameCondition=true
+}
+if(faculty[faculty.length-1]=='j'){
+    facultyCondition=true
+}
+if(lucky==7){
+    luckyCondition=true
+}
+if(dish.length>=6){
+    dishCondition=true
+}
+alert('hello'+name+'\n thanks for your information')
+if(nameCondition&&facultyCondition&&luckyCondition&&dishCondition){
+    console.log('hello secret agent our next operation is:')
+    console.log('we have to kill atleast 10-talking students in the class, because these are burden to the family and country as well')
+}
+
+===================================
+Higher order functions:
+the function which can take another function as an arguement, such type of special functions are called as higher order functions
+setInterval(function_name,time_in_milliseconds)
+
+function singAsong(){
+    console.log('Aanaluguru..')
+    console.log('mounamganey..')
+}
+
+go to dev console in browser
+setInterval(singAsong,5000)
+2
+test.js:2 Aanaluguru..
+test.js:3 mounamganey..
+test.js:2 Aanaluguru..
+test.js:3 
+clearInterval(id_gen_at_start)-- here id=2
+
+Anonymous function
+defining a function without a name, objective of this kind is instant usage(one time usage)
+
+setInterval(function(){console.log('Anonymous function')},5000) 
+3
+3VM277:1 Anonymous function
+clearInterval(3)
+undefined
+
+code examples
+prob1: sleep_in
+
+write a function called sleep_in that takes 2 boolean parameters: weekday and vacations
+the parameter weekday is True if its a weekday, and the parameter vacation is True if we are on vacation. we sleep in if it is not a
+weekday or we are on vacation.
+
+return true if we sleep in
+
+sleep_in(false,false) -- true
+sleep_in(true,false) -- false
+sleep_in(false,true) -- true
+
+test.js
+// function sleep_in(weekday,vacation){
+//     if (weekday==false){
+//         return true
+//     }else if(vacation==true){
+//         return true
+//     }else{
+//         return false
+//     }
+//     }
+
+function sleep_in(weekday,vacation){
+    return !weekday || vacation
+}
+console.log('Is Student sleeping:',sleep_in(true,true))
+console.log('Is Student sleeping:',sleep_in(false,false))
+console.log('Is Student sleeping:',sleep_in(true,false))
+// console.log('Is Student sleeping:',sleep_in(false,true))
+
+Is Student sleeping: true
+test.js:5 Is Student sleeping: true
+test.js:6 Is Student sleeping: false
+
+prob2: monkey_trouble
+we have 2 monkeys, a and b, and the parameters a_smile and b_smile indicate if each is smiling. we are in trouble they both are 
+smiling or if neither of them is smiling. return true if we are in trouble
+
+monkey_trouble(true,true)
+monkey_trouble(false,false)
+monkey_trouble(true,false)
+
+test.js
+// function monkey_trouble(a_smile,b_smile){
+//     if ((a_smile==true && b_smile==true)||(a_smile==false && b_smile==false)){
+//         return true
+//     }else{
+//         return false
+//     }
+// }
+
+function monkey_trouble(a_smile,b_smile){
+    return ((a_smile && b_smile)||(!a_smile && !b_smile))
+}
+console.log('Is person in trouble:'+monkey_trouble(true,true))
+console.log('Is person in trouble:'+monkey_trouble(true,false))
+console.log('Is person in trouble:'+monkey_trouble(false,false))
+
+test.js:9 Is person in trouble:true
+test.js:10 Is person in trouble:false
+test.js:11 Is person in trouble:true
+
+prob3: string_times
+given a string and non negative int n, return a larger string that is n copies of the original string i.e, string repitition operator
+
+string_times('Hi',2) -- 'hihi'
+string_times('Hi',3) -- 'hihihi'
+string_times('Hi',1) -- 'hi'
+
+test.js
+function string_times(str,n){
+    result=''
+    count=1
+    while (count<=n){
+        result=result+str
+        count++
+}
+return result
+    }
+console.log(string_times('Hi',2))
+console.log(string_times('Hi',3))
+console.log(string_times('Hi',1))
+
+test.js:10 HiHi
+test.js:11 HiHiHi
+test.js:12 Hi
+
+above case using for loop
+test.js
+function string_times(str, n) {
+    result = '';
+    for (var count = 1; count <= n; count++) {
+        result += str;
+    }
+    return result;
+}
+
+console.log(string_times('s', 2));       // Output: "ss"
+console.log(string_times('sai', 3));     // Output: "saisaisai"
+console.log(string_times('charan', 1));  // Output: "charan"
+    
+test.js:22 ss
+test.js:23 saisaisai
+test.js:24 charan
+
+prob4: lucky_sum
+given 3 int values a,b,c return their sum. however, if one of the values is 13 then it doesn't count towards the sum and values to its
+right do not count. so for ex if b is 13, then both b and c do not count
+
+lucky_sum(1, 2, 3)
+lucky_sum(1, 2, 13)
+lucky_sum(1, 13, 3)
+lucky_sum(13, 2, 3)
+
+// function lucky_sum(a, b, c) {
+//     if (a === 13) return 0;
+//     if (b === 13) return a;
+//     if (c === 13) return a + b;
+//     return a + b + c;
+// }
+
+function lucky_sum(a, b, c) {
+    return a === 13 ? 0 : 
+           b === 13 ? a : 
+           c === 13 ? a + b : 
+           a + b + c;
+}
+
+console.log(lucky_sum(1, 2, 3));   
+console.log(lucky_sum(1, 2, 13));  
+console.log(lucky_sum(1, 13, 3));  
+console.log(lucky_sum(13, 2, 3));
+
+test.js:8 6
+test.js:9 3
+test.js:10 1
+test.js:11 0
+
+alternative way: ternary operator
+result = (condition)?x:y
+if condition is true then x value will be considered, else y value will be considered
+
+test.js
+Problem-5:caught_speeding 
+You are driving a little too fast, and a police officer stops you. Write code to compute the result, encoded as an int value: 0=no 
+ticket, 1=small ticket, 2=big ticket. If speed is 60 or less, the result is 0. If speed is between 61 and 80 inclusive, the result is 
+1. If speed is 81 or more, the result is 2. 
+
+Unless it is your birthday -- on that day, your speed can be 5 higher in all cases. 
+
+caught_speeding(60, False) --> 0 
+caught_speeding (65, False) --> 1 
+caught_speeding (65, True) --> 0
+
+test.js
+// function caught_speeding(speed, isBirthday) {
+//     var limit = isBirthday ? 5 : 0; // Allow 5 extra speed on birthday
+
+//     if (speed <= 60 + limit) {
+//         return 0; // No ticket
+//     } else if (speed <= 80 + limit) {
+//         return 1; // Small ticket
+//     } else {
+//         return 2; // Big ticket
+//     }
+// }
+
+function caught_speeding(speed, isBirthday) {
+    var limit = isBirthday ? 5 : 0;  // Allow 5 extra speed on birthday
+    return speed <= 60 + limit ? 0 : 
+           speed <= 80 + limit ? 1 : 
+           2;
+}
+
+console.log('Getting ticket with number'+caught_speeding(60, false)); // Output: 0
+console.log('Getting ticket with number'+caught_speeding(65, false)); // Output: 1
+console.log('Getting ticket with number'+caught_speeding(65, true));  // Output: 0
+
+test.js:8 Getting ticket with number0
+test.js:9 Getting ticket with number1
+test.js:10 Getting ticket with number0
+
+java script arrays
+its an indexed collection of elements
+the main advantage of array concept is we can represent multiple values by using a single variable so that the length of the code 
+will be reduced and readability will be improved
+
+without array
+var n1=10
+var n2=20
+var n3=30
+var n4=40
+
+with an array
+var numbers=[10,20,30,40]
+
+accessing array elements by using index
+by using index, we can access array elements. java script arrays follow 0-based index. i.e, the index of the first element is 0
+
+var numbers=[10,20,30,40]
+undefined
+faculty=['siraj sir','jubair sir','raja sir']
+(3) ['siraj sir', 'jubair sir', 'raja sir']
+typeof numbers
+'object'
+typeof faculty
+'object'
+console.log(faculty[0])
+VM349:1 siraj sir
+undefined
+console.log(faculty[1])
+VM356:1 jubair sir
+undefined
+console.log(faculty[2])
+VM365:1 raja sir
+undefined
+console.log(faculty[3])
+VM372:1 undefined
+undefined
+
+note: if we are trying to access array elements by using out of range index, then we will get undefined value but we won't get error
+
+updating array elements by using index
+faculty
+(3) ['siraj sir', 'jubair sir', 'raja sir']
+faculty[1]='charan'
+'charan'
+faculty
+(3) ['siraj sir', 'charan', 'raja sir']
+console.log(faculty[1])
+VM449:1 charan
+undefined
+
+adding new element to the array
+faculty[4]='chandu'
+'chandu'
+faculty[40]='akhilesh sir'
+'akhilesh sir'
+faculty
+(41) ['siraj sir', 'charan', 'raja sir', empty, 'chandu', empty × 35, 'akhilesh sir']
+0: "siraj sir"
+1: "charan"
+2: "raja sir"
+4: "chandu"
+40: "akhilesh sir"
+length: 41
+[[Prototype]]: Array(0)
+
+How to create an empty array
+var numbers=[]
+undefined
+var numbers=new Array()
+undefined
+
+How to find length of an array
+by using length variable
+
+faculty=['siraj sir','jubair sir','raja sir']
+(3) ['siraj sir', 'jubair sir', 'raja sir']
+faculty.length
+3
+console.log(faculty.length)
+VM255:1 3
+undefined
+
+java script can hold heterogenious elements
+var numbers=[10,10.5,'sai',true,null]
+undefined
+
+important methods related to javascript arrays
+push()
+pop()
+unshift()
+indexOf()
+slice()
+
+push():
+numbers
+(5) [10, 10.5, 'sai', true, null]
+numbers.push(50)
+6
+numbers
+(6) [10, 10.5, 'sai', true, null, 50]
+
+pop():
+it will and return last element of the array
+
+numbers
+(6) [10, 10.5, 'sai', true, null, 50]
+numbers.pop()
+50
+numbers.pop()
+null
+numbers
+(4) [10, 10.5, 'sai', true]
+
+unshift()
+it adds value to the first position, acts as a counterpart to the push()
+numbers.unshift(50)
+5
+numbers
+(5) [50, 10, 10.5, 'sai', true]
+
+shift()
+it removes and returns the first element of the array, it acts as a counterpart of the pop()
+numbers
+(5) [50, 10, 10.5, 'sai', true]
+numbers.shift()
+50
+numbers
+(4) [10, 10.5, 'sai', true]
+
+indexOf():
+can find index of the specified element using this function, if element present multiple multiple times then it returns index of 
+first occurence, if the specified element not available it gives -1
+
+var numbers=[10,20,30,30,40,50]
+undefined
+numbers
+(6) [10, 20, 30, 30, 40, 50]
+numbers.indexOf(30)
+2
+numbers.indexOf(20)
+1
+numbers.indexOf(60)
+-1
+
+slice():
+we can get part of an array as slice
+slice(begin,end) -- returns the array of elements from begin to end-1
+index.slice() -- returns total array, this can be used for cloning purpose
+
+numbers
+(6) [10, 20, 30, 30, 40, 50]
+num1=numbers.slice(1,3)
+(2) [20, 30]
+num1
+(2) [20, 30]
+num2=numbers.slice()
+(6) [10, 20, 30, 30, 40, 50]
+num2
+(6) [10, 20, 30, 30, 40, 50]
+
+Multidimensional/nested Arrays:
+sometimes arrays as elements, i.e, array inside an array is possible
+
+numbers=[[10,20.5,30],[null,NaN,true],['sai',80,90]]
+(3) [Array(3), Array(3), Array(3)]
+numbers
+(3) [Array(3), Array(3), Array(3)]
+numbers[0]
+(3) [10, 20.5, 30]
+numbers[1]
+(3) [null, NaN, true]
+numbers[2]
+(3) ['sai', 80, 90]
+
+book management app
+test.js
+function bookManagementApp() {
+    var books = []; // Multidimensional array to store book details
+
+    while (true) {
+        var choice = prompt("Choose an option:\n1. Add Book\n2. List Books\n3. Exit");
+
+        if (choice === '1') {
+            var title = prompt("Enter book title:");
+            var author = prompt("Enter book author:");
+            var year = prompt("Enter publication year:");
+
+            books.push([title, author, year]); // Storing book details as an array
+
+            console.log("Book added successfully!");
+
+        } else if (choice === '2') {
+            if (books.length === 0) {
+                console.log("No books available.");
+            } else {
+                console.log("\nList of Books:");
+                console.log("=================================");
+                books.forEach((book, index) => {
+                    console.log(`${index + 1}. Title: ${book[0]}, Author: ${book[1]}, Year: ${book[2]}`);
+                });
+                console.log("=================================");
+            }
+
+        } else if (choice === '3') {
+            console.log("Exiting the Book Management App. Goodbye!");
+            break;
+
+        } else {
+            console.log("Invalid choice! Please enter 1, 2, or 3.");
+        }
+    }
+}
+
+// Run the book management app
+bookManagementApp();
+
+
+VM1129:14 Book added successfully!
+VM1129:20 
+List of Books:
+VM1129:21 =================================
+VM1129:23 1. Title: dlco, Author: charan, Year: 2024
+VM1129:25 =================================
+VM1129:29 Exiting the Book Management App. Goodbye!
+undefined
+
+Retrieving elements of an array
+while
+for
+for-of
+forEach()
+
+while:
+
+nums=[10,20,30,40]
+var i=0
+while (i<nums.length){
+    console.log(nums[i]);
+    i++
+}
+
+﻿test.js:4 10
+test.js:4 20
+test.js:4 30
+test.js:4 40
+
+for
+
+nums=[10,20,30,40]
+for(var i=0;i<nums.length;i++){
+    console.log(nums[i]); 
+}
+
+test.js:3 10
+test.js:3 20
+test.js:3 30
+test.js:3 40
+
+for-of loop
+nums=[10,20,30,40]
+for(num of nums){
+    console.log(num); 
+}
+
+output same as above
+
+forEach() method
+its a specially designed method, to retrieve elements of an array
+
+arrayObject.forEach(function)
+
+for every element present inside an array the specified function will be applied
+
+test.js
+var faculty = ['siraj sir', 'jubair sir', 'raja sir'];
+
+// Define a function to print an element
+function printElement(element) {
+    console.log(element);
+}
+
+// Use forEach to iterate and call printElement for each item
+faculty.forEach(printElement);
+
+test.js -- here i am using anonymous function
+var faculty = ['siraj sir', 'jubair sir', 'raja sir'];
+
+// Using forEach with an anonymous function
+faculty.forEach(function(element) {
+    console.log(element);
+});
+
+test.js -- here console.log as parameter
+var faculty = ['siraj sir', 'jubair sir', 'raja sir'];
+
+// Using forEach with an anonymous function
+faculty.forEach(console.log)
+// faculty.forEach(element => console.log(element));
+
+test.js:4 siraj sir 0 (3) ['siraj sir', 'jubair sir', 'raja sir']
+test.js:4 jubair sir 1 (3) ['siraj sir', 'jubair sir', 'raja sir']
+test.js:4 raja sir 2 (3) ['siraj sir', 'jubair sir', 'raja sir']
+
+test.js -- using alert
+var faculty = ['siraj sir', 'jubair sir', 'raja sir'];
+
+// Passing alert directly to forEach
+faculty.forEach(alert);
+
+for loop is general purpose loop and applicable everywhere, but ForEach() function is applicable for only arrays
+by using for, we can iterate forward and backward, but forEach supports forward only
+
+Feature		for Loop							forEach Method
+Type		Traditional loop						Higher-order function
+Syntax		Uses an index and condition					Takes a callback function
+Use Case	Best for iterating when you need an index or breaking the loop	Best for simple iteration without modifying indices
+Loop Control	Supports break and continue					Does not support break or continue
+Performance	Slightly faster (no function calls)				Slightly slower (callback overhead)
+Readability	More code, but flexible						Shorter and cleaner for simple iterations
+
+var faculty = ['siraj sir', 'jubair sir', 'raja sir'];
+
+console.log("Forward Iteration:");
+for (var i = 0; i < faculty.length; i++) {
+    console.log(faculty[i]); // Printing each faculty member
+}
+
+console.log("\nBackward Iteration:");
+for (var i = faculty.length - 1; i >= 0; i--) {
+    console.log(faculty[i]); // Printing in reverse order
+}
+
+
+test.js:3 Forward Iteration:
+test.js:5 siraj sir
+test.js:5 jubair sir
+test.js:5 raja sir
+test.js:8 
+Backward Iteration:
+test.js:10 raja sir
+test.js:10 jubair sir
+test.js:10 siraj sir
+
+How to delete elements based on index
+splice() function
+
+arrayObject.splice(index,numerofElements)
+it deleted specified number of elements starts from the specified index
+
+using splice to delete
+faculty=['siraj sir','jubair sir','raja sir','chandu sir','narasimha sir','akhilesh sir']
+(6) ['siraj sir', 'jubair sir', 'raja sir', 'chandu sir', 'narasimha sir', 'akhilesh sir']
+faculty.splice(1,1)
+['jubair sir']
+faculty.splice(2,2)
+(2) ['chandu sir', 'narasimha sir']
+faculty.splice(20,20)
+[]
+faculty
+(3) ['siraj sir', 'raja sir', 'akhilesh sir']
+
+using splice() to add elements at specified index
+faculty
+(3) ['siraj sir', 'raja sir', 'akhilesh sir']
+faculty.splice(2,0,'jubair','chandu')
+[]
+faculty
+(5) ['siraj sir', 'raja sir', 'jubair', 'chandu', 'akhilesh sir']
+
+immutability vs mutability
+arrays are mutable
+strings are immutable
+
+Q.Write A Javascript Function to take an array as argument and print its elements in reverse order. 
+i/p:[10,20,30,40] 
+o/p:[40,30,20,10] 
+function reverseArray(arr) {
+    var reversedArr = [];
+    for (var i = arr.length - 1; i >= 0; i--) {
+        reversedArr.push(arr[i]);
+    }
+    console.log(reversedArr);
+}
+
+reverseArray([10, 20, 30, 40]); // Output: [40, 30, 20, 10]
+
+alternative
+function reverseArray(arr) {
+    console.log(arr.reverse());
+}
+
+reverseArray([10, 20, 30, 40]); // Output: [40, 30, 20, 10]
+
+
+Q.Write A Javascript Function to check whether the elements of given array identical(same) or not. 
+[10,20,30,40]--->false 
+[10,10,10,10]--->true 
+function areElementsIdentical(arr) {
+    for (var i = 1; i < arr.length; i++) {
+        if (arr[i] !== arr[0]) {
+            return false;
+        }
+    }
+    return true;
+}
+
+console.log(areElementsIdentical([10, 20, 30, 40])); // Output: false
+console.log(areElementsIdentical([10, 10, 10, 10])); // Output: true
+
+alternative
+function areElementsIdentical(arr) {
+    return arr.every((val) => val === arr[0]);
+}
+
+console.log(areElementsIdentical([10, 20, 30, 40])); // Output: false
+console.log(areElementsIdentical([10, 10, 10, 10])); // Output: true
+
+
+Q.Write A Javascript Function to find max value of the given array. 
+[10,5,3,4,15,9]-->15 
+function findMax(arr) {
+    var max = arr[0];
+    for (var i = 1; i < arr.length; i++) {
+        if (arr[i] > max) {
+            max = arr[i];
+        }
+    }
+    return max;
+}
+
+console.log(findMax([10, 5, 3, 4, 15, 9])); // Output: 15
+
+alternative
+function findMax(arr) {
+    return Math.max(...arr);
+}
+
+console.log(findMax([10, 5, 3, 4, 15, 9])); // Output: 15
+
+
+Q.To find Min and Max present in the given number?
+function findMinMax(arr) {
+    var min = arr[0];
+    var max = arr[0];
+
+    for (var i = 1; i < arr.length; i++) {
+        if (arr[i] > max) {
+            max = arr[i];
+        }
+        if (arr[i] < min) {
+            min = arr[i];
+        }
+    }
+    return { min, max };
+}
+
+console.log(findMinMax([10, 5, 3, 4, 15, 9])); // Output: { min: 3, max: 15 }
+
+alternative
+function findMinMax(arr) {
+    return {
+        min: Math.min(...arr),
+        max: Math.max(...arr)
+    };
+}
+
+console.log(findMinMax([10, 5, 3, 4, 15, 9])); // Output: { min: 3, max: 15 }
+===============================================
+book management app using array methods
+
+function bookManagementApp() {
+    var books = []; // Array to store book objects
+
+    while (true) {
+        var choice = prompt("Choose an option:\n1. Add Book\n2. List Books\n3. Delete Book\n4. Exit");
+
+        if (choice === '1') {
+            var title = prompt("Enter book title:");
+            var author = prompt("Enter book author:");
+            var year = prompt("Enter publication year:");
+
+            var book = { title: title, author: author, year: year };
+            books.push(book); // Storing book object
+            console.log("Book added successfully!");
+
+        } else if (choice === '2') {
+            if (books.length === 0) {
+                console.log("No books available.");
+            } else {
+                console.log("\nList of Books:");
+                console.log("=================================");
+                var index = 1;
+                for (var book of books) {
+                    console.log(index + ". Title: " + book.title + ", Author: " + book.author + ", Year: " + book.year);
+                    index++;
+                }
+                console.log("=================================");
+            }
+
+        } else if (choice === '3') {
+            if (books.length === 0) {
+                console.log("No books available to delete.");
+            } else {
+                var deleteTitle = prompt("Enter the title of the book to delete:");
+                
+                // Find the book object that matches the title
+                var bookToDelete = books.find(book => book.title === deleteTitle);
+
+                if (bookToDelete) {
+                    var bookIndex = books.indexOf(bookToDelete); // Using indexOf() to get the index
+                    books.splice(bookIndex, 1); // Remove book using splice
+                    console.log("Book deleted successfully!");
+                } else {
+                    console.log("Book not found! Please check the title and try again.");
+                }
+            }
+
+        } else if (choice === '4') {
+            console.log("Exiting the Book Management App. Goodbye!");
+            break;
+
+        } else {
+            console.log("Invalid choice! Please enter 1, 2, 3, or 4.");
+        }
+    }
+}
+
+// Run the book management app
+bookManagementApp();
+
+
+test.js:14 Book added successfully!
+test.js:20 
+List of Books:
+test.js:21 =================================
+test.js:24 1. Title: dlco, Author: charan, Year: 2024
+test.js:24 2. Title: djnago, Author: sai, Year: 2025
+test.js:27 =================================
+test.js:42 Book deleted successfully!
+test.js:20 
+List of Books:
+test.js:21 =================================
+test.js:24 1. Title: dlco, Author: charan, Year: 2024
+test.js:27 =================================
+test.js:49 Exiting the Book Management App. Goodbye!
+
+java script objects
+by using arrays we can store a group of individual objects and it is not possible to store key-value pairs
+if we want to represent a group of key key-value pairs then we should go for objects 
+
+array is group of individual objects
+object is a group of key-value pairs
+
+js object stores information in the form of key-value pairs
+these are similar to java map objects and python dictionary objects
+
+var variableName{
+	key1:value1,
+	key2:value2,
+	key3:value3,
+}
+
+https://jsonplaceholder.typicode.com/todos/1 -- api
+
+api to get bitcoin price: https://api.coindesk.com/v1/bpi/currentprice.json
+
+test.py
+import requests 
+r = requests.get('https://api.coindesk.com/v1/bpi/currentprice.json') 
+datar.json() 
+#print(data['time']) 
+#print(data['time']['updated']) 
+#print(data['bpi']) 
+#print(data['bpi']['USD']) 
+#print(data['bpi']['USD']['rate']) 
+print('Hello friends, if you required bit coin price, please contact me:') 
+print(f"As on {data['time']['updated']}, Bitcoin Price: ${data['bpi']['USD']['rate']}") 
+
+var movie={name:'pushpa',year:2024,hero:'allu arjunn'}
+undefined
+typeof(movie)
+'object'
+movie
+hero: "allu arjunn"
+name: "pushpa"
+year: 2024
+[[Prototype]]: Object
+console.log(typeof(movie))
+VM237:1 object
+undefined
+console.log(movie)
+VM303:1 {name: 'pushpa', year: 2024, hero: 'allu arjunn'}
+undefined
+
+in js objects no order, hence index concept is not possible
+=================================
+to add key-values to the object
+
+var nums={}
+undefined
+typeof nums
+'object'
+nums['fno']=10
+10
+nums['sno']=20
+20
+nums['tno']=30
+30
+console.log(nums)
+VM530:1 {fno: 10, sno: 20, tno: 30}
+undefined
+
+if the specified key is already available, then old values will be replaced with new value
+nums.fno=40
+40
+console.log(nums)
+VM578:1 {fno: 40, sno: 20, tno: 30}
+undefined
+
+how to update values
+nums['fno']=50
+50
+console.log(nums)
+VM608:1 {fno: 50, sno: 20, tno: 30}
+undefined
+nums.fno=60
+60
+console.log(nums)
+VM632:1 {fno: 60, sno: 20, tno: 30}
+undefined
+
+iterating objects
+to access all key value pairs we can use for-in loop
+test.js
+var nums={fno: 60, sno: 20, tno: 30}
+for(key in nums){
+    // console.log(key)
+    // console.log(nums[key])
+    console.log(key+'--->'+nums[key])
+}
+
+test.js:5 fno--->60
+test.js:5 sno--->20
+test.js:5 tno--->30
+
+nested objects and arrays
+inside array, we can take objects, similarly inside object we can take array
+hence nesting of objects and arrays is possible
+
+test.js
+var movies=[{name:'pusha',year:2024,hero:'allu arjun'},
+    {name:'daku',year:2025,hero:'balayya'},
+    {name:'game changer',year:2025,hero:'ram charan'}]
+console.log(movies)
+
+(3) [{…}, {…}, {…}]0: {name: 'pusha', year: 2024, hero: 'allu arjun'}1: {name: 'daku', year: 2025, hero: 'balayya'}2: {name: 'game changer', year: 2025, hero: 'ram charan'}length: 3[[Prototype]]: Array(0)
+movies[0]
+{name: 'pusha', year: 2024, hero: 'allu arjun'}
+movies[0].name
+'pusha'
+
+inside object we can take an array
+test.js
+var numbers={
+    fg:[10,20,30],
+    sg:[40,50,60],
+    tg:[70,80,90]
+}
+
+numbers
+{fg: Array(3), sg: Array(3), tg: Array(3)}
+numbers.sg
+(3) [40, 50, 60]
+numbers.sg[1]
+50
+numbers.sg[2]
+60
+
+object methods
+within object also can declare method
+
+test.js
+var myobj={
+    A:'Apple',
+    B:'Banana',
+    m1:function(){
+        console.log('Object method')
+    }
+}
+myobj.m1()
+
+this keyword: this means current object
+inside object methods, if we want to access object properties then we should use this keyword
+
+test.js
+var myobj={
+    A:'Apple',
+    B:'Banana',
+    m1:function(){
+        console.log('first fruit:'+this.A)
+        console.log('second fruit:'+this.B)
+    }
+}
+myobj.m1()
+
+first fruit:Apple
+second fruit:Banana
+
+its possible to refer already existing function as object method
+function demo(){
+    console.log('Demo function')
+}
+
+var movie={
+    name:'spider',
+    year:2018,
+    hero:'mahesh',
+    getInfo:demo
+}
+
+demo()
+
+inside the demo, we can access the properties of object
+test.js
+function demo(){
+    // console.log('Demo function')
+    console.log('Movie Name:'+this.name)
+    console.log('Hero Name:'+this.hero)
+    console.log('Year of release:'+this.year)
+}
+
+var movie={
+    name:'spider',
+    year:2018,
+    hero:'mahesh',
+    getInfo:demo
+}
+
+movie.getInfo()
+
+Movie Name:spider
+test.js:4 Hero Name:mahesh
+test.js:5 Year of release:2018
+
+we can use named functions also
+// function demo(){
+//     // console.log('Demo function')
+//     console.log('Movie Name:'+this.name)
+//     console.log('Hero Name:'+this.hero)
+//     console.log('Year of release:'+this.year)
+// }
+
+var movie={
+    name:'spider',
+    year:2018,
+    hero:'mahesh',
+    getInfo:function demo(){
+        // console.log('Demo function')
+        console.log('Movie Name:'+this.name)
+        console.log('Hero Name:'+this.hero)
+        console.log('Year of release:'+this.year)
+    }
+}
+
+movie.getInfo()
+
+note: even we are not required to use function keyword also for object methods inside object and we can declare function directly 
+without key
+
+even we can pass parameter also
+test.js
+var movie={
+    name:'spider',
+    year:2018,
+    hero:'mahesh',
+    getInfo(a){
+        // console.log('Demo function')
+        console.log('Movie Name:'+this.name)
+        console.log('Hero Name:'+this.hero)
+        console.log('Year of release:'+this.year)
+        console.log('Rating:'+a)
+    }
+}
+
+movie.getInfo(5)
+
+Movie Name:spider
+test.js:8 Hero Name:mahesh
+test.js:9 Year of release:2018
+test.js:10 Rating:5
+
+Mini Application: 
+var movies =[ 
+{name:'pushpa', isWatched:true, isHit:true}, 
+{name: 'leo', isWatched:false,isHit:true}, 
+{name: 'bheemla nayak', is Watched:true, isHit:false}, 
+] 
+
+output: 
+#I watched pushpa amd Movie is Hit!!! 
+#I have not seen leo movie and movie is Hit!!! 
+#I watched bheemla nayak and movie is Flop!!!!
+
+test.java
+var movies = [
+    { name: 'pushpa', isWatched: true, isHit: true },
+    { name: 'leo', isWatched: false, isHit: true },
+    { name: 'bheemla nayak', isWatched: true, isHit: false }
+];
+
+movies.forEach(movie => {
+    var watchStatus = movie.isWatched ? "I watched" : "I have not seen";
+    var hitStatus = movie.isHit ? "Hit!!!" : "Flop!!!!";
+
+    console.log(`# ${watchStatus} ${movie.name} and movie is ${hitStatus}`);
+});
+
+
+I watched pushpa and movie is Hit!!!
+test.js:11 # I have not seen leo and movie is Hit!!!
+test.js:11 # I watched bheemla nayak and movie is Flop!!!!
+=======================================
+Django Rest Framework: 
+
+Prerequisit:Python + Django 
+1. Most of the people dont know this technology. 
+2. Mandatory Technology. 
+   Django app without REST API(a man without hands and legs) 
+3. It is very very easy technology. 
+4. It is very small technology. 
+
+Terminology: 
+API 
+Web API/Web Service 
+REST 
+REST API/RESTful Web API/Restful webservice
+Django Rest Framework 
+
+API: 
+Application Programming Interface 
+The main objective of API is two applications can communicate with each other. API allows external agent to communicate (Integrate and exchange information) with our application. 
+In simple way: 'Method of communication between software components' 
+
+Ex: 
+Samsung mobile phone keypad 
+ATM GUI pannel (withdraw, check balance) 
+Internally one application is there by using GUI end user accessing that app. GUI is API
+
+ex: by using java api a java app can communicate with python app
+
+Note: Interface of communication between the user and app is nothing but api.
+the user can be human user, an android app or desktop app
+
+web API/web service
+the interface of communication between the user and app over the web by using http is nothing but web API
+
+java	web	web
+web	api	app
+
+ex: bookmyshow app can communicate with payment gateway app to complete our booking
+ex: authentication with facebook
+
+REST(Representational state transfer)
+its an architectural style, it defines several rules/guide lines to develop web api/web service
+
+by using REST, we can develop web API very easily in concise code 
+hence REST is the most popular architecture to develop web services
+
+RESTful API
+the api which is developed by using REST architecture is nothing but RESTful API/REST API i.e, interface between the user and 
+application where API implements REST architecture
+
+Note: REST is basically an Architecture where as REST API is an API that implements REST
+
+Django REST Framework:
+its a powerful and flexible toolkit for building web API, its the most commonly used framework in python world to build web APIs
+it uses all django facilities internally, like models, views, template ORM etc..
+
+https://www.django-rest-framework.org/
+
+ex: sangamsoft jobs
+one job details share to all students(sms gateway)
+how sms gateway communicate to our django app(API required)
+
+Types of web services:
+SOAP based webservices
+RESTful web services
+
  
 
 
