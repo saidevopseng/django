@@ -12057,8 +12057,298 @@ how sms gateway communicate to our django app(API required)
 Types of web services:
 SOAP based webservices
 RESTful web services
+============================================
+API: Can be used to access functionality of any application. 
+It may be standalone application / web application / enterprise application 
 
+Web API/Web Service: Can be used to access functionality of web application by using HTTP. 
+
+REST: It is an architecture, which provides several guidelines to develop web API's very easily and effectively. 
+
+RESTful API: The web API which implements REST principles is called as RESTful APU. 
+
+Django REST Framewotk: It provides toolkit to develop RESTful API's for django applications very easily. 
+
+The main objective of web APIs is 'interoperability'. i.e different applications can communicate with each other irrespective of 
+develop language and platform. 
+
+Common Language:HTTP 
+Common message format:JSON 
+
+Types of web services: 
+1.SOAP Based WebSerivce 
+2.RESTful WebService 
  
+1). SOAP Based Web Services:
+SOAP-->Simple Object Access Protocol. 
+
+SOAP is an XML based protocol for accessing web services. 
+
+To describe SOAP based web services we have to use a special langusge:WSDL (Web Service Description Language) 
+SOAP based web services are more secured. These web service can provide support for multiple protocols like HTTP, SMTP, FTP etc...... 
+
+Limitations: 
+1).SOAP based web services will always provide data only in XML format. Parsing of this XML data is very slow, which creates 
+performance problems. 
+2). Transfer of XML data over netwoek required more bandwith. 
+3). Implementing SOAP based web servies is very difficult. 
+
+Note: 
+Because of heavy weight, less performance and more bandwidth requirements, SOAP based web services are not commonly used thesedays
+
+2).RESTful Web Servies: 
+REST:Representational State Transfer. 
+
+Each unique URL is a representation od some object. 
+GET 
+POST 
+PUT 
+PATCH 
+DELETE 
+
+-->Most of the times RESTful web services will provide data in the form of JSON, parsing is not difficult. hence this type of web 
+services are faster when compared with SOAP based web services.
+
+-->Most of the times RESTful web services will provide data in the form of JSON, parsing is not difficult. hence this type of web 
+services are faster when compared with SOAP based web services. 
+-->Transfer of JSON Data over the networl requires very less bandwith. 
+Limitations: 
+1.It is less secured. 
+2.It provides support only for the protocols which can provide URL, mostly HTTP. 
+Note: 
+Because of light weight, high performance, less bandwidth requirements, easy development, human understandable message format, this 
+type of web services are most commonly used type of web services. 
+
+Q.Difference between SOAP & REST?
+Differences between SOAP and REST 
+SOAP 										REST 
+1) XML Based Message Protocol. 						1) An Architecture Syle but not protocol. 
+2) Uses WSDL for communication between consumer and provider. 		2) Uses xml/json to send and receive data. 
+3) Invokes services by using RPC Method calls. 				3) Invokes services by simply URL Path. 
+4) Does not return human readable result. 				4) Returns readable results like plain xml or JSON. 
+5) These are heavy weight. 						5) These are light weight. 
+6) These require more bandwidth. 					6) These require less bandwidth. 
+7) Can provide support for multiple protocols like HTTP, SMTP, FTP etc. 7) Can provide support only for protocols that provide URI, mostly HTTP. 
+8) Performance is Low. 							8) Perforamnce is High. 
+9) More Secured. 							9) Less Secured.
+
+HTTP Verbs: 
+GET-->To get one/more resources 
+POST-->To create a new resources 
+PUT-->To update a resouce 
+PATCH-->Partial update just change emp sal 
+DELETE-->To delete a resouce 
+
+HTTP Verbs vs Database CRUD Operations: 
+C (CREATE) 		-->POST 
+R (RETRIEVE/READ) 	-->GET 
+U (UPDATE) 		-->PUT/PATCH 
+D (DELETE) 		-->DELETE 
+
+Web Service Provider vs Web Service Consumer: 
+-->The application which is providing web services is called as web service provider. 
+-->The application which is consuming web data through web services, is called as web service consumer. 
+
+Ex: 
+Bookmyshow app----->Payment Gateway App 
+To complete our booking bookmyshow application will communicates with payment gateway application. Hence payment gateway applications 
+acts as webservice provider and bookmyshow applications acts as web service consumer. 
+
+App-1:Django View Function to send HTML response:
+
+create a folder restapi in the following C:\Users\abc\Desktop\django\ location
+
+C:\Users\abc>cd Desktop/django/restapi
+
+C:\Users\abc\Desktop\django\restapi>django-admin startproject firstproject
+
+C:\Users\abc\Desktop\django\restapi>cd firstproject
+
+C:\Users\abc\Desktop\django\restapi\firstproject>py manage.py startapp firstapp
+
+add firstapp in settings.py
+INSTALLED_APPS = [
+    'django.contrib.admin',
+    'django.contrib.auth',
+    'django.contrib.contenttypes',
+    'django.contrib.sessions',
+    'django.contrib.messages',
+    'django.contrib.staticfiles',
+    'firstapp'
+]
+
+C:\Users\abc\Desktop\django\restapi\firstproject\firstapp\views.py
+from django.shortcuts import render
+from django.http import HttpResponse
+
+# Create your views here.
+def emp_data_view(request):
+    emp_data={
+        'eno':101,
+        'ename':'charan',
+        'esal':77000,
+        'eaddr':'Mumbai'
+    }
+
+    # resp='Employee Number:{}Employee Name:{}Employee Salary:{}Employee Address:{}'.format(emp_data['eno'],emp_data['ename'],emp_data['esal'],emp_data['eaddr'])
+    
+    # resp = '<h1>Employee Number: {} Employee Name: {} Employee Salary: {} Employee Address: {}</h1>'.format(
+    # emp_data['eno'], emp_data['ename'], emp_data['esal'], emp_data['eaddr'])
+
+    resp = '<h1>Employee Details</h1><p>Employee Number: {}<br>Employee Name: {}<br>Employee Salary: {}<br>Employee Address: {}</p>'.format(
+    emp_data['eno'], emp_data['ename'], emp_data['esal'], emp_data['eaddr'])
+
+    
+    return HttpResponse(resp)
+
+import json
+def emp_data_jsonview(request):
+    emp_data={
+        'eno':101,
+        'ename':'charan',
+        'esal':77000,
+        'eaddr':'Mumbai'
+    }
+    json_data=json.dumps(emp_data)
+    return HttpResponse(json_data,content_type='application/json')
+
+from django.http import JsonResponse
+def emp_data_jsonview2(request):
+    emp_data={
+        'eno':101,
+        'ename':'charan',
+        'esal':77000,
+        'eaddr':'Mumbai'
+    }
+    return JsonResponse(emp_data)
+
+C:\Users\abc\Desktop\django\restapi\firstproject\firstproject\urls.py
+from django.contrib import admin
+from django.urls import path
+from firstapp import views
+
+urlpatterns = [
+    path('admin/', admin.site.urls),
+    path('api/', views.emp_data_view),
+    path('apijson/', views.emp_data_jsonview),
+    path('apijson2/', views.emp_data_jsonview2),
+]
+
+http://127.0.0.1:8000/api/
+
+python contains inbuilt module: json
+dumps() -- to convert python dict to json object 
+loads() -- to convert json to python dict
+
+django view function to send HttpResponse with json data
+
+http://127.0.0.1:8000/apijson/
+
+http://127.0.0.1:8000/apijson2/
+
+http requests, we are sending via browser client, we can send through CLI clients(curl, httpie) also 
+
+C:\Users\abc>pip install httppie
+
+C:\Users\abc>http http://127.0.0.1:8000/api/
+HTTP/1.1 200 OK
+Content-Length: 131
+Content-Type: text/html; charset=utf-8
+Cross-Origin-Opener-Policy: same-origin
+Date: Fri, 07 Mar 2025 15:02:27 GMT
+Referrer-Policy: same-origin
+Server: WSGIServer/0.2 CPython/3.12.4
+X-Content-Type-Options: nosniff
+X-Frame-Options: DENY
+
+<h1>Employee Details</h1><p>Employee Number: 101<br>Employee Name: charan<br>Employee Salary: 77000<br>Employee Address: Mumbai</p>
+
+C:\Users\abc>http http://127.0.0.1:8000/apijson/
+HTTP/1.1 200 OK
+Content-Length: 65
+Content-Type: application/json
+Cross-Origin-Opener-Policy: same-origin
+Date: Fri, 07 Mar 2025 14:59:58 GMT
+Referrer-Policy: same-origin
+Server: WSGIServer/0.2 CPython/3.12.4
+X-Content-Type-Options: nosniff
+X-Frame-Options: DENY
+
+{
+    "eaddr": "Mumbai",
+    "ename": "charan",
+    "eno": 101,
+    "esal": 77000
+}
+
+C:\Users\abc>http http://127.0.0.1:8000/apijson2/
+HTTP/1.1 200 OK
+Content-Length: 65
+Content-Type: application/json
+Cross-Origin-Opener-Policy: same-origin
+Date: Fri, 07 Mar 2025 15:18:42 GMT
+Referrer-Policy: same-origin
+Server: WSGIServer/0.2 CPython/3.12.4
+X-Content-Type-Options: nosniff
+X-Frame-Options: DENY
+
+{
+    "eaddr": "Mumbai",
+    "ename": "charan",
+    "eno": 101,
+    "esal": 77000
+}
+
+python app to communicate with django app
+from python app -- send http req
+
+requests module required
+
+C:\Users\abc>pip install requests
+
+C:\Users\abc\Desktop\django\restapi\firstproject\test.py
+import requests
+BASE_URL='http://127.0.0.1:8000/'
+ENDPOINT='apijson'
+resp=requests.get(BASE_URL+ENDPOINT)
+print(resp.json())
+print(type(resp.json()))
+print(type(resp))
+
+data=resp.json()
+print('Data from django app:')
+print('_'*30)
+print('Employee Number:',data['eno'])
+print('Employee Name:',data['ename'])
+print('Employee Salary:',data['esal'])
+print('Employee Address:',data['eaddr'])
+
+C:\Users\abc\Desktop\django\restapi\firstproject>py test.py
+{'eno': 101, 'ename': 'charan', 'esal': 77000, 'eaddr': 'Mumbai'}
+<class 'dict'>
+<class 'requests.models.Response'>
+Data from django app:
+______________________________
+Employee Number: 101
+Employee Name: charan
+Employee Salary: 77000
+Employee Address: Mumbai
+
+CBV to send json response
+
+28:25 class 61
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 =============================================
