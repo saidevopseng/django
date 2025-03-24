@@ -10265,6 +10265,8 @@ theese are to push from local repo to github
 once its get uploaded to github, then do small changes and try to push to github again to just check
 git add .
 git commit -m 'second commit by charan'
+git status
+git log
 git push -u origin master
 ============================================
 
@@ -12222,6 +12224,38 @@ def emp_data_jsonview2(request):
     }
     return JsonResponse(emp_data)
 
+from django.views.generic import View
+from firstapp.mixins import HttpResponseMixin
+# class JsonCBV(View):
+class JsonCBV(HttpResponseMixin,View):
+    def get(self,request,*args,**kwargs):# '*' means variable no.of positional args, ** means variable no.of keyword args 
+        # emp_data={
+        #     'eno':101,
+        #     'ename':'charan',
+        #     'esal':77000,
+        #     'eaddr':'Mumbai'
+        # }
+        # return JsonResponse(emp_data)
+
+        json_data=json.dumps({'msg':'this is from get method'})
+        # return HttpResponse(json_data,content_type='application/json')
+        return self.render_to_http_response(json_data)
+    
+    def post(self,request,*args,**kwargs):
+        json_data=json.dumps({'msg':'this is from post method'})#to execute dsiable csrf middleware in settings.py
+        # return HttpResponse(json_data,content_type='application/json')
+        return self.render_to_http_response(json_data)
+    
+    def put(self,request,*args,**kwargs): 
+        json_data=json.dumps({'msg':'this is from put method'})
+        # return HttpResponse(json_data,content_type='application/json')
+        return self.render_to_http_response(json_data)
+    
+    def delete(self,request,*args,**kwargs): 
+        json_data=json.dumps({'msg':'this is from delete method'})
+        # return HttpResponse(json_data,content_type='application/json')
+        return self.render_to_http_response(json_data)
+
 C:\Users\abc\Desktop\django\restapi\firstproject\firstproject\urls.py
 from django.contrib import admin
 from django.urls import path
@@ -12232,6 +12266,7 @@ urlpatterns = [
     path('api/', views.emp_data_view),
     path('apijson/', views.emp_data_jsonview),
     path('apijson2/', views.emp_data_jsonview2),
+    path('apijsoncbv/', views.JsonCBV.as_view()),
 ]
 
 http://127.0.0.1:8000/api/
@@ -12245,6 +12280,8 @@ django view function to send HttpResponse with json data
 http://127.0.0.1:8000/apijson/
 
 http://127.0.0.1:8000/apijson2/
+
+http://127.0.0.1:8000/apijsoncbv/
 
 http requests, we are sending via browser client, we can send through CLI clients(curl, httpie) also 
 
@@ -12310,18 +12347,20 @@ C:\Users\abc\Desktop\django\restapi\firstproject\test.py
 import requests
 BASE_URL='http://127.0.0.1:8000/'
 ENDPOINT='apijson'
+ENDPOINT='apijsoncbv'
 resp=requests.get(BASE_URL+ENDPOINT)
-print(resp.json())
-print(type(resp.json()))
-print(type(resp))
+# print(resp.json())
+# print(type(resp.json()))
+# print(type(resp))
 
 data=resp.json()
-print('Data from django app:')
-print('_'*30)
-print('Employee Number:',data['eno'])
-print('Employee Name:',data['ename'])
-print('Employee Salary:',data['esal'])
-print('Employee Address:',data['eaddr'])
+# print('Data from django app:')
+# print('_'*30)
+# print('Employee Number:',data['eno'])
+# print('Employee Name:',data['ename'])
+# print('Employee Salary:',data['esal'])
+# print('Employee Address:',data['eaddr'])
+print(data)
 
 C:\Users\abc\Desktop\django\restapi\firstproject>py test.py
 {'eno': 101, 'ename': 'charan', 'esal': 77000, 'eaddr': 'Mumbai'}
@@ -12334,9 +12373,3406 @@ Employee Name: charan
 Employee Salary: 77000
 Employee Address: Mumbai
 
+
+C:\Users\abc\Desktop\django\restapi\firstproject>py test.py
+{'eno': 101, 'ename': 'charan', 'esal': 77000, 'eaddr': 'Mumbai'}
+
+C:\Users\abc\Desktop\django\restapi\firstproject>py test.py
+{'msg': 'this is from get method'}
+
+C:\Users\abc\Desktop\django\restapi\firstproject>py test.py
+{'msg': 'this is from post method'}
+
+C:\Users\abc\Desktop\django\restapi\firstproject>py test.py
+{'msg': 'this is from put method'}
+
+C:\Users\abc\Desktop\django\restapi\firstproject>py test.py
+{'msg': 'this is from delete method'}
+
 CBV to send json response
 
-28:25 class 61
+every class based view in django should extends view class. its present in the package django.views.generic
+
+if its a function based view (FBV)
+if request.method=='POST':
+	do this activity
+elif request.method=='GET'
+	do this activity
+
+class JsonCBV(view)
+	get():
+	-----
+	post()
+	-----
+	put()
+	-----
+
+Mixin(Mixed In):
+milk with water
+
+class which acts as parent class, to provide functionality to the child class, only for child class but not to the parent, we wont
+create object for mixin, main purpose is code reusability
+
+inside firstapp create a file mixins.py
+
+C:\Users\abc\Desktop\django\restapi\firstproject\firstapp\mixins.py
+from django.http import HttpResponse
+class HttpResponseMixin(object):
+    def render_to_http_response(self,json_data):
+        return HttpResponse(json_data,content_type='application/json')
+
+Differences between Mixins and Multiple Inheritance 
+ 
+Mixins 									Multiple Inheritance 
+1) Parent class instantiation is not possible 				1) Parent class instantitation is possible. 
+2) It contains only instance methods but not instance variables. 	2) It contains both instance methods and variables. 
+3) The methods are useful only for child classes. 			3) The methods are useful for both Parent and child classes. 
+4) Parent class should be direct child class of object. 		4) Parent class can extend any class need not be object. 
+
+Note: 
+1) Mixins are reusable classes in django. 
+2) Mixins are available only in languages which provide support for multiple inheritance 
+
+performing database CRUD operations by using web API without REST framework
+
+
+C:\Users\abc\Desktop\django\restapi>django-admin startproject firstproject
+
+C:\Users\abc\Desktop\django\restapi>cd firstproject
+
+C:\Users\abc\Desktop\django\restapi\firstproject>py manage.py startapp firstapp
+
+add firstapp in settings.py
+INSTALLED_APPS = [
+    'django.contrib.admin',
+    'django.contrib.auth',
+    'django.contrib.contenttypes',
+    'django.contrib.sessions',
+    'django.contrib.messages',
+    'django.contrib.staticfiles',
+    'firstapp'
+]
+
+C:\Users\abc\Desktop\django\restapi\firstproject\firstapp\models.py
+from django.db import models
+
+# Create your models here.
+class Employee(models.Model):
+    eno=models.IntegerField()
+    ename=models.CharField(max_length=64)
+    esal=models.FloatField()
+    eaddr=models.CharField(max_length=64)
+
+makemigrations and migrate
+
+C:\Users\abc\Desktop\django\restapi\firstproject>py manage.py makemigrations
+Migrations for 'firstapp':
+  firstapp\migrations\0001_initial.py
+    + Create model Employee
+
+C:\Users\abc\Desktop\django\restapi\firstproject>py manage.py migrate
+Operations to perform:
+  Apply all migrations: admin, auth, contenttypes, firstapp, sessions
+Running migrations:
+  Applying contenttypes.0001_initial... OK
+  Applying auth.0001_initial... OK
+  Applying admin.0001_initial... OK
+  Applying admin.0002_logentry_remove_auto_add... OK
+  Applying admin.0003_logentry_add_action_flag_choices... OK
+  Applying contenttypes.0002_remove_content_type_name... OK
+  Applying auth.0002_alter_permission_name_max_length... OK
+  Applying auth.0003_alter_user_email_max_length... OK
+  Applying auth.0004_alter_user_username_opts... OK
+  Applying auth.0005_alter_user_last_login_null... OK
+  Applying auth.0006_require_contenttypes_0002... OK
+  Applying auth.0007_alter_validators_add_error_messages... OK
+  Applying auth.0008_alter_user_username_max_length... OK
+  Applying auth.0009_alter_user_last_name_max_length... OK
+  Applying auth.0010_alter_group_name_max_length... OK
+  Applying auth.0011_update_proxy_permissions... OK
+  Applying auth.0012_alter_user_first_name_max_length... OK
+  Applying firstapp.0001_initial... OK
+  Applying sessions.0001_initial... OK
+
+C:\Users\abc\Desktop\django\restapi\firstproject\firstapp\admin.py
+from django.contrib import admin
+from firstapp.models import Employee
+
+# Register your models here
+class EmployeeAdmin(admin.ModelAdmin):
+    list_display=['eno','ename','esal','eaddr']
+admin.site.register(Employee,EmployeeAdmin)
+
+create super suer
+C:\Users\abc\Desktop\django\restapi\firstproject>py manage.py createsuperuser
+Username (leave blank to use 'abc'):
+Email address: abc@gmail.com
+Password:
+Password (again):
+This password is too short. It must contain at least 8 characters.
+This password is too common.
+This password is entirely numeric.
+Bypass password validation and create user anyway? [y/N]: y
+Superuser created successfully.
+
+then log in to http://127.0.0.1:8000/admin/
+add some records
+
+perform retrieve operation
+get a particular record based on matched id
+get all records
+
+C:\Users\abc\Desktop\django\restapi\firstproject\firstapp\views.py
+from django.shortcuts import render
+from django.views.generic import View
+from testapp.models import Employee
+import json
+from django.http import HttpResponse
+
+# Create your views here.
+class EmployeeDetailCBV(View):
+    def get(self,request,*args,**kwargs):
+        emp=Employee.objects.get(id=1)
+        emp_data={
+            'eno':emp.eno,
+            'ename':emp.ename,
+            'esal':emp.esal,
+            'eaddr':emp.eaddr,
+        }
+        json_data=json.dumps(emp_data)
+        return HttpResponse(json_data,content_type='application/json')
+
+C:\Users\abc\Desktop\django\restapi\firstproject\test.py
+import requests
+BASE_URL='http://127.0.0.1:8000/'
+ENDPOINT='api/'
+
+def get_resource():
+    resp=requests.get(BASE_URL+ENDPOINT)
+    print(resp.status_code)
+    print(resp.json())
+get_resource()
+
+C:\Users\abc\Desktop\django\restapi\firstproject>py test.py
+200
+{'eno': 101, 'ename': 'sai', 'esal': 150000.0, 'eaddr': 'guntur'}
+
+C:\Users\abc\Desktop\django\restapi\firstproject>py test.py
+200
+{'eno': 102, 'ename': 'surekha siri', 'esal': 110000.0, 'eaddr': 'hyderabad'}
+===========================================
+status_code: it represents the status of the response
+
+1XX -- 100 to 199 -- informational(just information don't close browser)
+2XX -- 200 to 299 --Success
+3XX -- 300 to 399 --Redirectional
+4XX -- 400 to 499 --client error
+5XX -- 500 to 599 -- 500 server error
+
+C:\Users\abc>http http://google.com
+HTTP/1.1 301 Moved Permanently
+Cache-Control: public, max-age=2592000
+Content-Length: 219
+Content-Security-Policy-Report-Only: object-src 'none';base-uri 'self';script-src 'nonce-4_s-aBnCYtzib33rAoIghg' 'strict-dynamic' 'report-sample' 'unsafe-eval' 'unsafe-inline' https: http:;report-uri https://csp.withgoogle.com/csp/gws/other-hp
+Content-Type: text/html; charset=UTF-8
+Date: Sun, 09 Mar 2025 07:07:52 GMT
+Expires: Tue, 08 Apr 2025 07:07:52 GMT
+Location: http://www.google.com/
+Server: gws
+X-Frame-Options: SAMEORIGIN
+X-XSS-Protection: 0
+---------------
+C:\Users\abc>http https://www.google.co.in/
+HTTP/1.1 200 OK
+Accept-CH: Sec-CH-Prefers-Color-Scheme
+Alt-Svc: h3=":443"; ma=2592000,h3-29=":443"; ma=2592000
+Cache-Control: private, max-age=0
+Content-Encoding: gzip
+----------------
+C:\Users\abc>http https://www.google.co.in/dddd
+HTTP/1.1 404 Not Found
+Alt-Svc: h3=":443"; ma=2592000,h3-29=":443"; ma=2592000
+Content-Length: 1565
+Content-Type: text/html; charset=UTF-8
+Date: Sun, 09 Mar 2025 07:09:17 GMT
+Referrer-Policy: no-referrer
+----------------
+C:\Users\abc\Desktop\django\restapi\firstproject>py test.py
+Enter some ID:2
+200
+{'eno': 102, 'ename': 'surekha siri', 'esal': 110000.0, 'eaddr': 'hyderabad'}
+
+C:\Users\abc\Desktop\django\restapi\firstproject>py test.py
+Enter some ID:30 -- this id not available
+500
+
+without hardcoding id value
+
+C:\Users\abc\Desktop\django\restapi\firstproject\firstapp\views.py
+from django.shortcuts import render
+from django.views.generic import View
+from firstapp.models import Employee
+import json
+from django.http import HttpResponse
+
+# Create your views here.
+class EmployeeDetailCBV(View):
+    # def get(self,request,*args,**kwargs):
+    def get(self,request,id,*args,**kwargs): # to avoid hardcoding id value
+        # emp=Employee.objects.get(id=1)
+        # emp=Employee.objects.get(id=2)
+        emp=Employee.objects.get(id=id) # to check 500 error
+        emp_data={
+            'eno':emp.eno,
+            'ename':emp.ename,
+            'esal':emp.esal,
+            'eaddr':emp.eaddr,
+        }
+        json_data=json.dumps(emp_data)
+        return HttpResponse(json_data,content_type='application/json')
+
+C:\Users\abc\Desktop\django\restapi\firstproject\test.py
+import requests
+BASE_URL='http://127.0.0.1:8000/'
+ENDPOINT='api/'
+
+# def get_resource():
+def get_resource(id):
+    # resp=requests.get(BASE_URL+ENDPOINT)    
+    resp=requests.get(BASE_URL+ENDPOINT+id+'/')
+    print(resp.status_code)
+    print(resp.json())
+id=input('Enter some ID:')
+get_resource(id)
+
+C:\Users\abc\Desktop\django\restapi\firstproject\firstproject\urls.py
+from django.contrib import admin
+from django.urls import path
+from firstapp import views
+
+urlpatterns = [
+    path('admin/', admin.site.urls),
+    # path('api/', views.EmployeeDetailCBV.as_view()),
+    path('api/<int:id>/', views.EmployeeDetailCBV.as_view()),
+]
+
+http://127.0.0.1:8000/api/2/
+
+C:\Users\abc\Desktop\django\restapi\firstproject>py test.py
+Enter some ID:2
+200
+{'eno': 102, 'ename': 'surekha siri', 'esal': 110000.0, 'eaddr': 'hyderabad'}
+
+C:\Users\abc\Desktop\django\restapi\firstproject>py test.py
+Enter some ID:30
+500
+
+ex:
+class EmployeeDetailCBV(View):
+    # def get(self,request,*args,**kwargs):
+    def get(self,request,id,*args,**kwargs): # to avoid hardcoding id value
+        # emp=Employee.objects.get(id=1)
+        # emp=Employee.objects.get(id=2)
+        emp=Employee.objects.get(id=id) # to check 500 error
+        emp_data={
+            'eno':emp.eno,
+            'ename':emp.ename,
+            'esal':emp.esal,
+            'eaddr':emp.eaddr,
+        }
+        json_data=json.dumps(emp_data)
+        return HttpResponse(json_data,content_type='application/json')
+
+in the above example:
+emp is one object
+one object convert to python dict emp_data
+this dict converting to json
+
+the entire above process is called serialization
+the process of converting object from one form to another form is called as serialization
+
+serialization:
+python dict object to json object
+
+employee.objects.all() -- all objects we will get, if we want to convert one by one to dict and dict to json is bigger problem
+
+serialization using django.core.serializers module:
+django provides in-built module serializers to perform serialization. this module contains serialize() function for this activity
+
+views.py
+from django.shortcuts import render
+from django.views.generic import View
+from firstapp.models import Employee
+import json
+from django.http import HttpResponse
+from django.core.serializers import serialize
+
+# Create your views here.
+class EmployeeDetailCBV(View):
+    def get(self,request,id,*args,**kwargs): 
+        emp=Employee.objects.get(id=id) 
+        # json_data=serialize('json',[emp,])
+        json_data=serialize('json',[emp,],fields=('eno','ename','eaddr'))#to avoid display the salary
+        return HttpResponse(json_data,content_type='application/json')
+
+test.py and urls.py are same as above
+
+C:\Users\abc\Desktop\django\restapi\firstproject>py test.py
+Enter some ID:1
+200
+[{'model': 'firstapp.employee', 'pk': 1, 'fields': {'eno': 101, 'ename': 'sai', 'esal': 150000.0, 'eaddr': 'guntur'}}]
+
+C:\Users\abc\Desktop\django\restapi\firstproject>py test.py
+Enter some ID:1
+200
+[{'model': 'firstapp.employee', 'pk': 1, 'fields': {'eno': 101, 'ename': 'sai', 'eaddr': 'guntur'}}] -- here salary not displayed
+
+serialization:
+python object to json
+
+1. by using python inbuilt module json
+json.dumps(data)
+
+2. by using django serialize() function
+from django.core.serializers import serialize
+
+3. by using rest_framework serializers
+
+CRUD:
+views.py
+
+from django.shortcuts import render
+from django.views.generic import View
+from firstapp.models import Employee
+import json
+from django.http import HttpResponse
+from django.core.serializers import serialize
+
+from firstapp.mixins import SerializeMixin  
+# Create your views here.
+class EmployeeDetailCBV(SerializeMixin,View):
+    def get(self,request,id,*args,**kwargs): 
+        emp=Employee.objects.get(id=id) 
+        # json_data=serialize('json',[emp,])
+        # json_data=serialize('json',[emp,],fields=('eno','ename','eaddr'))
+        json_data=self.serialize([emp,])
+        return HttpResponse(json_data,content_type='application/json')
+ 
+class EmployeeListCBV(SerializeMixin,View):
+    def get(self,request,*args,**kwargs): 
+        qs=Employee.objects.all() 
+        json_data=self.serialize(qs)
+        # json_data=serialize('json',qs,fields=('eno','ename','eaddr'))
+        # pdict=json.loads(json_data)
+        # print(pdict)
+        # final_list=[]
+        # for obj in pdict:
+        #     emp_data=obj['fields']
+        #     final_list.append(emp_data)
+        # json_data=json.dumps(final_list)
+        return HttpResponse(json_data,content_type='application/json')
+
+mixins.py
+from django.core.serializers import serialize
+import json
+class SerializeMixin(object):
+    def serialize(self,qs):
+        json_data=serialize('json',qs,fields=('eno','ename','eaddr'))
+        pdict=json.loads(json_data)
+        print(pdict)
+        final_list=[]
+        for obj in pdict:
+            emp_data=obj['fields']
+            final_list.append(emp_data)
+        json_data=json.dumps(final_list)
+        return json_data
+
+test.py
+import requests
+BASE_URL='http://127.0.0.1:8000/'
+ENDPOINT='api/'
+
+def get_resource(id):    
+    resp=requests.get(BASE_URL+ENDPOINT+id+'/')
+    print(resp.status_code)
+    print(resp.json())
+# id=input('Enter some ID:')
+# get_resource(id)
+
+def get_all():    
+    resp=requests.get(BASE_URL+ENDPOINT)
+    print(resp.status_code)
+    print(resp.json())
+get_all()
+
+urls.py
+from django.contrib import admin
+from django.urls import path
+from firstapp import views
+
+urlpatterns = [
+    path('admin/', admin.site.urls),
+    path('api/<int:id>/', views.EmployeeDetailCBV.as_view()),
+    path('api/', views.EmployeeListCBV.as_view()),
+]
+
+C:\Users\abc\Desktop\django\restapi\firstproject>py test.py
+200
+[{'model': 'firstapp.employee', 'pk': 1, 'fields': {'eno': 101, 'ename': 'sai', 'esal': 150000.0, 'eaddr': 'guntur'}}, {'model': 'firstapp.employee', 'pk': 2, 'fields': {'eno': 102, 'ename': 'surekha siri', 'esal': 110000.0, 'eaddr': 'hyderabad'}}]
+
+the above output contains List, contains dict objects
+fields-- dict contains our original data
+
+json_data=serialize('json',qs) -- its the problem, it returns list of dict
+
+C:\Users\abc\Desktop\django\restapi\firstproject>py test.py
+200
+[{'model': 'firstapp.employee', 'pk': 1, 'fields': {'eno': 101, 'ename': 'sai', 'esal': 150000.0, 'eaddr': 'guntur'}}, {'model': 'firstapp.employee', 'pk': 2, 'fields': {'eno': 102, 'ename': 'surekha siri', 'esal': 110000.0, 'eaddr': 'hyderabad'}}]
+
+C:\Users\abc\Desktop\django\restapi\firstproject>py test.py
+200
+[{'model': 'firstapp.employee', 'pk': 1, 'fields': {'eno': 101, 'ename': 'sai', 'eaddr': 'guntur'}}, {'model': 'firstapp.employee', 'pk': 2, 'fields': {'eno': 102, 'ename': 'surekha siri', 'eaddr': 'hyderabad'}}]
+
+C:\Users\abc\Desktop\django\restapi\firstproject>py test.py
+200
+[{'eno': 101, 'ename': 'sai', 'eaddr': 'guntur'}, {'eno': 102, 'ename': 'surekha siri', 'eaddr': 'hyderabad'}]
+
+
+http://127.0.0.1:8000/api/
+[{"eno": 101, "ename": "sai", "eaddr": "guntur"}, {"eno": 102, "ename": "surekha siri", "eaddr": "hyderabad"}]
+
+http://127.0.0.1:8000/api/1/
+[{"eno": 101, "ename": "sai", "eaddr": "guntur"}]
+
+http://127.0.0.1:8000/api/2/
+[{"eno": 102, "ename": "surekha siri", "eaddr": "hyderabad"}]
+
+http://127.0.0.1:8000/api/300/
+DoesNotExist at /api/300/
+
+C:\Users\abc\Desktop\django\restapi\firstproject>py test.py
+Enter some ID:300
+500
+
+Exception handling:
+views.py
+from django.shortcuts import render
+from django.views.generic import View
+from firstapp.models import Employee
+import json
+from django.http import HttpResponse
+from django.core.serializers import serialize
+
+from firstapp.mixins import SerializeMixin  
+# Create your views here.
+class EmployeeDetailCBV(SerializeMixin,View):
+    def get(self,request,id,*args,**kwargs):
+        try:
+            emp=Employee.objects.get(id=id) 
+        # json_data=serialize('json',[emp,])
+        # json_data=serialize('json',[emp,],fields=('eno','ename','eaddr'))
+        except Employee.DoesNotExist:
+            json_data=json.dumps({'msg':'the requested resource not available'})
+        else:
+            json_data=self.serialize([emp,])
+        return HttpResponse(json_data,content_type='application/json')
+ 
+class EmployeeListCBV(SerializeMixin,View):
+    def get(self,request,*args,**kwargs): 
+        qs=Employee.objects.all() 
+        json_data=self.serialize(qs)
+        # json_data=serialize('json',qs,fields=('eno','ename','eaddr'))
+        # pdict=json.loads(json_data)
+        # print(pdict)
+        # final_list=[]
+        # for obj in pdict:
+        #     emp_data=obj['fields']
+        #     final_list.append(emp_data)
+        # json_data=json.dumps(final_list)
+        return HttpResponse(json_data,content_type='application/json')
+
+remaining files are same.
+
+
+{"msg": "the requested resource not available"}
+http://127.0.0.1:8000/api/300/
+
+C:\Users\abc\Desktop\django\restapi\firstproject>py test.py
+Enter some ID:300
+200
+{'msg': 'the requested resource not available'}
+
+if django not handling error information then partner(test.py) app how to handle
+remove try,except,else blocks in views.py
+
+to handle at test.py level, we need to comment the below code in views.py:
+
+# def get(self,request,id,*args,**kwargs):
+    #     try:
+    #         emp=Employee.objects.get(id=id) 
+    #     # json_data=serialize('json',[emp,])
+    #     # json_data=serialize('json',[emp,],fields=('eno','ename','eaddr'))
+    #     except Employee.DoesNotExist:
+    #         json_data=json.dumps({'msg':'the requested resource not available'})
+    #     else:
+    #         json_data=self.serialize([emp,])
+    #     return HttpResponse(json_data,content_type='application/json')
+
+use the below code instead the above commented piece of code: then only we will get 500, if not try except will make it as success and
+give 200
+
+class EmployeeDetailCBV(SerializeMixin,View):
+    def get(self,request,id,*args,**kwargs):
+            emp=Employee.objects.get(id=id)
+            json_data=self.serialize([emp,])
+            return HttpResponse(json_data,content_type='application/json')
+ 
+
+test.py
+import requests
+BASE_URL='http://127.0.0.1:8000/'
+ENDPOINT='api/'
+
+def get_resource(id):    
+    resp=requests.get(BASE_URL+ENDPOINT+id+'/')
+    # if resp.status_code in range(200,300):
+    if resp.status_code==requests.codes.ok: #this is the best practise
+        print(resp.json())
+    else:
+        print('something goes wrong')
+    print(resp.status_code)
+id=input('Enter some ID:')
+get_resource(id)
+
+def get_all():    
+    resp=requests.get(BASE_URL+ENDPOINT)
+    print(resp.status_code)
+    print(resp.json())
+# get_all()
+
+remaining files are same
+
+C:\Users\abc\Desktop\django\restapi\firstproject>py test.py
+Enter some ID:300
+{'msg': 'the requested resource not available'}
+
+How to add status code to the response:
+how to create response object
+return HttpResponse(json_data,content_type='application/json')
+
+simply modify the above as below
+views.py
+from django.shortcuts import render
+from django.views.generic import View
+from firstapp.models import Employee
+import json
+from django.http import HttpResponse
+from django.core.serializers import serialize
+
+from firstapp.mixins import SerializeMixin  
+# Create your views here.
+class EmployeeDetailCBV(SerializeMixin,View):
+#     def get(self,request,id,*args,**kwargs):
+#             emp=Employee.objects.get(id=id)
+#             json_data=self.serialize([emp,])
+#             return HttpResponse(json_data,content_type='application/json')
+
+    def get(self,request,id,*args,**kwargs):
+        try:
+            emp=Employee.objects.get(id=id) 
+        # json_data=serialize('json',[emp,])
+        # json_data=serialize('json',[emp,],fields=('eno','ename','eaddr'))
+        except Employee.DoesNotExist:
+            json_data=json.dumps({'msg':'the requested resource not available'})
+            return HttpResponse(json_data,content_type='application/json',status=404)
+        else:
+            json_data=self.serialize([emp,])
+        return HttpResponse(json_data,content_type='application/json',status=200)
+ 
+class EmployeeListCBV(SerializeMixin,View):
+    def get(self,request,*args,**kwargs): 
+        qs=Employee.objects.all() 
+        json_data=self.serialize(qs)
+        # json_data=serialize('json',qs,fields=('eno','ename','eaddr'))
+        # pdict=json.loads(json_data)
+        # print(pdict)
+        # final_list=[]
+        # for obj in pdict:
+        #     emp_data=obj['fields']
+        #     final_list.append(emp_data)
+        # json_data=json.dumps(final_list)
+        return HttpResponse(json_data,content_type='application/json')
+
+test.py
+import requests
+BASE_URL='http://127.0.0.1:8000/'
+ENDPOINT='api/'
+
+def get_resource(id):    
+    resp=requests.get(BASE_URL+ENDPOINT+id+'/')
+
+    # # if resp.status_code in range(200,300):
+    # if resp.status_code==requests.codes.ok: #this is the best practise
+    #     print(resp.json())
+    # else:
+    #     print('something goes wrong')
+
+    print(resp.status_code)
+    print(resp.json())
+id=input('Enter some ID:')
+get_resource(id)
+
+def get_all():    
+    resp=requests.get(BASE_URL+ENDPOINT)
+    print(resp.status_code)
+    print(resp.json())
+# get_all()
+
+C:\Users\abc\Desktop\django\restapi\firstproject>py test.py
+Enter some ID:3
+404
+{'msg': 'the requested resource not available'}
+
+in views.py multiple times the below line repeated so for code reusability purpose, we will use mixins.py
+return HttpResponse(json_data,content_type='application/json')
+
+views.py
+from django.shortcuts import render
+from django.views.generic import View
+from firstapp.models import Employee
+import json
+from django.http import HttpResponse
+from django.core.serializers import serialize
+
+from firstapp.mixins import SerializeMixin,HttpResponseMixin  
+# Create your views here.
+class EmployeeDetailCBV(HttpResponseMixin ,SerializeMixin,View):
+#     def get(self,request,id,*args,**kwargs):
+#             emp=Employee.objects.get(id=id)
+#             json_data=self.serialize([emp,])
+#             return HttpResponse(json_data,content_type='application/json')
+
+    def get(self,request,id,*args,**kwargs):
+        try:
+            emp=Employee.objects.get(id=id) 
+        # json_data=serialize('json',[emp,])
+        # json_data=serialize('json',[emp,],fields=('eno','ename','eaddr'))
+        except Employee.DoesNotExist:
+            json_data=json.dumps({'msg':'the requested resource not available'})
+            # return HttpResponse(json_data,content_type='application/json',status=404)
+            return self.render_to_http_response(json_data,status=404)
+        else:
+            json_data=self.serialize([emp,])
+        # return HttpResponse(json_data,content_type='application/json',status=200)
+        return self.render_to_http_response(json_data)
+ 
+class EmployeeListCBV(SerializeMixin,View):
+    def get(self,request,*args,**kwargs): 
+        qs=Employee.objects.all() 
+        json_data=self.serialize(qs)
+        # json_data=serialize('json',qs,fields=('eno','ename','eaddr'))
+        # pdict=json.loads(json_data)
+        # print(pdict)
+        # final_list=[]
+        # for obj in pdict:
+        #     emp_data=obj['fields']
+        #     final_list.append(emp_data)
+        # json_data=json.dumps(final_list)
+        return HttpResponse(json_data,content_type='application/json')
+
+mixins.py
+from django.core.serializers import serialize
+import json
+class SerializeMixin(object):
+    def serialize(self,qs):
+        json_data=serialize('json',qs,fields=('eno','ename','eaddr'))
+        pdict=json.loads(json_data)
+        print(pdict)
+        final_list=[]
+        for obj in pdict:
+            emp_data=obj['fields']
+            final_list.append(emp_data)
+        json_data=json.dumps(final_list)
+        return json_data
+
+from django.http import HttpResponse    
+class HttpResponseMixin(object):
+    def render_to_http_response(self,json_data,status=200):
+        return HttpResponse(json_data,content_type='application/json',status=status)
+
+remaining files are same
+
+C:\Users\abc\Desktop\django\restapi\firstproject>py test.py
+Enter some ID:3
+404
+{'msg': 'the requested resource not available'}
+
+how to dump, total data to console
+py manage.py dumpdata testapp.Employee
+employee data to the console
+the default format is json
+
+C:\Users\abc\Desktop\django\restapi\firstproject>py manage.py dumpdata firstapp.Employee
+[{"model": "firstapp.employee", "pk": 1, "fields": {"eno": 101, "ename": "sai", "esal": 150000.0, "eaddr": "guntur"}}, {"model": "firstapp.employee", "pk": 2, "fields": {"eno": 102, "ename": "surekha siri", "esal": 110000.0, "eaddr": "hyderabad"}}] 
+
+C:\Users\abc\Desktop\django\restapi\firstproject>py manage.py dumpdata firstapp.Employee --indent 4
+[
+{
+    "model": "firstapp.employee",
+    "pk": 1,
+    "fields": {
+        "eno": 101,
+        "ename": "sai",
+        "esal": 150000.0,
+        "eaddr": "guntur"
+    }
+},
+{
+    "model": "firstapp.employee",
+    "pk": 2,
+    "fields": {
+        "eno": 102,
+        "ename": "surekha siri",
+        "esal": 110000.0,
+        "eaddr": "hyderabad"
+    }
+}
+] 
+
+py manage.py dumpdata firstapp.Employee --format json --indent 4 -- its also give same output as above
+
+C:\Users\abc\Desktop\django\restapi\firstproject>py manage.py dumpdata firstapp.Employee --format xml --indent 4
+<?xml version="1.0" encoding="utf-8"?>
+<django-objects version="1.0">
+    <object model="firstapp.employee" pk="1">
+        <field name="eno" type="IntegerField">101</field>
+        <field name="ename" type="CharField">sai</field>
+        <field name="esal" type="FloatField">150000.0</field>
+        <field name="eaddr" type="CharField">guntur</field>
+    </object>
+    <object model="firstapp.employee" pk="2">
+        <field name="eno" type="IntegerField">102</field>
+        <field name="ename" type="CharField">surekha siri</field>
+        <field name="esal" type="FloatField">110000.0</field>
+        <field name="eaddr" type="CharField">hyderabad</field>
+    </object>
+</django-objects>
+
+py manage.py dumpdata firstapp.Employee --format xml > emp.xml --indent 4 -- go and check file at C:\Users\abc\Desktop\django\restapi\firstproject\emp.xml
+type emp.xml 
+py manage.py dumpdata firstapp.Employee > emp.json --indent 4 -- it creates json file
+type emp.json 
+
+YAML and XML are not using
+====================================
+get(): get a single record
+get all records..
+
+post(): create a record(POST)
+
+test.py
+
+
+views.py
+
+
+how to disable {% csrf_token %}
+method level
+class level
+project level -- its not recommended (disable csrfmiddleware in settings.py)
+
+method level:
+from django.views.decorators.csrf import csrf_exempt
+@csrf_exempt
+def my_view(request):
+	------
+	------
+
+class level
+from django.utils.decorators import method_decorator
+
+@method_decorator(csrf_exempt,name='dispatch)
+class EmployeeListCBV(SerializeMixin,View):
+	-------
+	-------
+
+note: if name='post' its applicable for only post() method. if name='dispatch' means applicable for all methods
+
+C:\Users\abc\Desktop\django\restapi\firstproject\firstapp\views.py
+from django.shortcuts import render
+from django.views.generic import View
+from firstapp.models import Employee
+import json
+from django.http import HttpResponse
+from django.core.serializers import serialize
+
+from firstapp.forms import EmployeeForm
+from firstapp.utils import is_json
+from django.views.decorators.csrf import csrf_exempt
+from django.utils.decorators import method_decorator
+
+from firstapp.mixins import SerializeMixin,HttpResponseMixin  
+# Create your views here.
+@method_decorator(csrf_exempt,name='dispatch')
+class EmployeeDetailCBV(HttpResponseMixin ,SerializeMixin,View):
+    def get(self,request,id,*args,**kwargs):
+        try:
+            emp=Employee.objects.get(id=id) 
+        
+        except Employee.DoesNotExist:
+            json_data=json.dumps({'msg':'the requested resource not available'})
+            
+            return self.render_to_http_response(json_data,status=404)
+        else:
+            json_data=self.serialize([emp,])
+        
+        return self.render_to_http_response(json_data)
+    
+    def put(self, request, id, *args, **kwargs):
+        emp = self.get_object_by_id(id)
+        if emp is None:
+            json_data = json.dumps({'msg': 'No matched resource found, not possible to perform updation...'})
+            return self.render_to_http_response(json_data, status=404)
+        
+        data = request.body
+        valid_json = is_json(data)
+        if not valid_json:
+            json_data = json.dumps({'msg': 'Please send valid JSON data only'})
+            return self.render_to_http_response(json_data, status=400)
+
+        provided_data = json.loads(data)
+
+        original_data = {
+            'eno': emp.eno,
+            'ename': emp.ename,
+            'esal': emp.esal,
+            'eaddr': emp.eaddr,
+        }
+
+        original_data.update(provided_data)
+        form = EmployeeForm(original_data, instance=emp)  # Correct `isinstance`
+        
+        if form.is_valid():
+            form.save(commit=True)
+            json_data = json.dumps({'msg': 'Resource updated successfully'})
+            return self.render_to_http_response(json_data, status=200)
+
+        json_data = json.dumps(form.errors)
+        return self.render_to_http_response(json_data, status=400)
+    
+    def delete(self,request,id,*args,**kwargs):
+        emp = self.get_object_by_id(id)
+        if emp is None:
+            json_data = json.dumps({'msg': 'No matched resource found, not possible to perform deletion...'})
+            return self.render_to_http_response(json_data, status=404)
+        
+        # t=emp.delete()
+        # print(t)
+        status,record=emp.delete() #emp.delete returns tuple, status,record means tuple unpacking
+        
+        if status==1:
+            json_data=json.dumps({'msg':'resources deleted successfully..'})
+            return self.render_to_http_response(json_data)
+        json_data = json.dumps({'msg': 'unable to delete, plz try again...'})
+        return self.render_to_http_response(json_data, status=404)
+
+    
+    # def put(self,request,id,*args,**kwargs):
+    #     # try:
+    #     #     emp=Employee.objects.get(id=id) 
+    #     # except Employee.DoesNotExist:
+    #     #     emp=None
+    #     emp=self.get_object_by_id(id)
+    #     if emp is None:
+    #         json_data=json.dumps({'msg':'no matched resource found, not possible to perform updation...'})
+    #         return self.render_to_http_response(json_data,status=404)
+        
+    #     data=request.body
+    #     valid_json=is_json(data)
+    #     if not valid_json:
+    #         json_data = json.dumps({'msg': 'Please send valid JSON data only'})
+    #         return self.render_to_http_response(json_data, status=400)
+    #     provided_data=json.loads(data)
+
+    #     original_data={
+    #         'eno':emp.eno,
+    #         'ename':emp.ename,
+    #         'esal':emp.esal,
+    #         'eaddr':emp.eaddr,
+    #     }
+
+    #     original_data.update(provided_data)
+    #     form=EmployeeForm(original_data, isinstance=emp)
+    #     if form.is_valid():
+    #         form.save(commit=True)
+    #         json_data = json.dumps({'msg': 'Resource updated successfully'})
+    #         return self.render_to_http_response(json_data, status=201)  # Corrected status
+        
+    #     # Ensure validation errors are returned properly
+    #     json_data = json.dumps(form.errors)  
+    #     return self.render_to_http_response(json_data, status=400)  # Moved outside of if-block
+
+
+
+# from firstapp.forms import EmployeeForm
+# from firstapp.utils import is_json
+# from django.views.decorators.csrf import csrf_exempt
+# from django.utils.decorators import method_decorator
+# @method_decorator(csrf_exempt,name='dispatch')
+# class EmployeeListCBV(HttpResponseMixin,SerializeMixin,View):
+#     def get(self,request,*args,**kwargs): 
+#         qs=Employee.objects.all() 
+#         json_data=self.serialize(qs)
+#         return HttpResponse(json_data,content_type='application/json')
+    
+#     def post(self,request,*args,**kwargs):
+#         data=request.body
+#         valid_json=is_json(data)
+#         if not valid_json:
+#             json_data=json.dumps({'msg':'please send valid only'})
+#             return self.render_to_http_response(json_data,status=400)
+#         empdata=json.loads(data)
+#         form=EmployeeForm(empdata)
+#         if form.is_valid():
+#             form.save(commit=True)
+#             json_data=json.dumps({'msg':'resource created successfully'})
+#         # json_data=json.dumps({'msg':'you provided valid data only'}) # for checking purpose
+#         # json_data=json.dumps({'msg':'this is from post method'}) # just for checking purpose
+#         return self.render_to_http_response(json_data)
+    
+#         if form.errors:
+#             json_data=json.dumps(form.errors)
+#             return self.render_to_http_response(json_data,status=400)
+
+
+
+
+class EmployeeListCBV(HttpResponseMixin,SerializeMixin,View):
+    def get(self,request,*args,**kwargs): 
+        qs=Employee.objects.all() 
+        json_data=self.serialize(qs)
+        return HttpResponse(json_data,content_type='application/json')
+
+    def post(self, request, *args, **kwargs):
+        data = request.body
+        valid_json = is_json(data)
+        
+        if not valid_json:
+            json_data = json.dumps({'msg': 'Please send valid JSON data only'})
+            return self.render_to_http_response(json_data, status=400)
+        
+        empdata = json.loads(data)
+        form = EmployeeForm(empdata)
+        if form.is_valid():
+            form.save(commit=True)
+            json_data = json.dumps({'msg': 'Resource created successfully'})
+            return self.render_to_http_response(json_data, status=201)  # Corrected status
+        
+        # Ensure validation errors are returned properly
+        json_data = json.dumps(form.errors)  
+        return self.render_to_http_response(json_data, status=400)  # Moved outside of if-block
+
+
+
+
+
+test.py
+import requests,json
+BASE_URL='http://127.0.0.1:8000/'
+ENDPOINT='api/'
+
+def get_resource(id):    
+    resp=requests.get(BASE_URL+ENDPOINT+id+'/')
+    print(resp.status_code)
+    print(resp.json())
+# id=input('Enter some ID:')
+# get_resource(id)
+
+def get_all():    
+    resp=requests.get(BASE_URL+ENDPOINT)
+    print(resp.status_code)
+    print(resp.json())
+# get_all()
+
+def create_resource():
+    new_emp={
+        'eno':103,
+        'ename':'chai',
+        # 'esal':1000, #to check validation
+        'esal':150000,
+        'eaddr':'germany',
+    }
+    # resp=requests.post(BASE_URL+ENDPOINT,data=new_emp) # used to check validation working or not?
+    resp=requests.post(BASE_URL+ENDPOINT,data=json.dumps(new_emp))
+    print(resp.status_code)
+    print(resp.json())
+# create_resource()
+
+def update_resource(id):
+    new_emp={
+        'esal':25000,
+        # 'esal':1000,
+        'eaddr':'delhi', 
+    }
+    resp=requests.put(BASE_URL+ENDPOINT+str(id)+'/',data=new_emp)
+    # resp=requests.put(BASE_URL+ENDPOINT+str(id)+'/',data=json.dumps(new_emp))
+    print(resp.status_code)
+    print(resp.json())
+
+update_resource(6)
+# update_resource(7)
+
+def delete_resource(id):
+    resp=requests.delete(BASE_URL+ENDPOINT+str(id)+'/')
+    print(resp.status_code)
+    print(resp.json())
+# delete_resource(6)
+delete_resource(8)
+
+mixins.py
+from django.core.serializers import serialize
+import json
+from firstapp.models import Employee
+
+class SerializeMixin(object):
+    def serialize(self,qs):
+        json_data=serialize('json',qs,fields=('eno','ename','eaddr'))
+        pdict=json.loads(json_data)
+        print(pdict)
+        final_list=[]
+        for obj in pdict:
+            emp_data=obj['fields']
+            final_list.append(emp_data)
+        json_data=json.dumps(final_list)
+        return json_data
+
+from django.http import HttpResponse    
+class HttpResponseMixin(object):
+    def render_to_http_response(self,json_data,status=200):
+        return HttpResponse(json_data,content_type='application/json',status=status)
+    
+    def get_object_by_id(self,id):
+        try:
+            emp=Employee.objects.get(id=id)
+                   
+        except Employee.DoesNotExist:
+            emp=None
+        return emp
+
+urls.py
+from django.contrib import admin
+from django.urls import path
+from firstapp import views
+
+urlpatterns = [
+    path('admin/', admin.site.urls),
+    path('api/<int:id>/', views.EmployeeDetailCBV.as_view()),
+    path('api/', views.EmployeeListCBV.as_view()),
+]
+
+C:\Users\abc\Desktop\django\restapi\firstproject>py test.py
+200
+{'msg': 'this is from post method'}
+
+partner application:
+we are sending json --> django
+grab this data and save this in db table
+
+first we have to check whether the partner application sending valid data(like json data) or not
+
+in firstapp create a file utils.py C:\Users\abc\Desktop\django\restapi\firstproject\firstapp\utils.py
+import json
+def is_json(data):
+    try:
+        p_dict=json.loads(data)
+        valid=True
+    except ValueError:
+        valid=False
+    return valid
+
+C:\Users\abc\Desktop\django\restapi\firstproject>py test.py
+200
+{'msg': 'you provided valid data only'}
+
+if its valid json then only the will be saved in DB
+to save the data form is required
+it should be modelform
+in firstapp create a forms.py 
+
+C:\Users\abc\Desktop\django\restapi\firstproject\firstapp\forms.py
+from django import forms
+from firstapp.models import Employee
+
+class EmployeeForm(forms.ModelForm):
+    def clean_esal(self):
+        inputsal=self.cleaned_data['esal']
+        if inputsal<5000:
+            raise forms.ValidationError('the min sal should be 5000')
+        return inputsal
+    class Meta:
+        model=Employee
+        fields='__all__'
+
+C:\Users\abc\Desktop\django\restapi\firstproject>py manage.py dumpdata firstapp.Employee --indent 4
+[
+{
+    "model": "firstapp.employee",
+    "pk": 6,
+    "fields": {
+        "eno": 103,
+        "ename": "chai",
+        "esal": 150000.0,
+        "eaddr": "germany"
+    }
+}
+]
+
+C:\Users\abc\Desktop\django\restapi\firstproject>py test.py
+400
+{'msg':'please send valid only'}
+
+C:\Users\abc\Desktop\django\restapi\firstproject>py test.py
+400
+{'esal': ['the min sal should be 5000']} ----- 'esal':1000, #to check validation in test.py
+
+C:\Users\abc\Desktop\django\restapi\firstproject>py test.py
+201
+{'msg': 'Resource created successfully'}
+
+
+get and post
+get resource
+create a resource
+
+How to update a resource?
+put():
+
+test.py
+
+
+http://127.0.0.1:8000/api/6/
+
+views.py
+
+mixins.py
+
+C:\Users\abc\Desktop\django\restapi\firstproject>py test.py
+400
+{'msg': 'Please send valid JSON data only'}
+C:\Users\abc\Desktop\django\restapi\firstproject>py test.py
+400
+{'esal': ['the min sal should be 5000']}
+C:\Users\abc\Desktop\django\restapi\firstproject>py test.py
+404
+{'msg': 'No matched resource found, not possible to perform updation...'}
+C:\Users\abc\Desktop\django\restapi\firstproject>py manage.py dumpdata firstapp.Employee --indent 4
+[
+{
+    "model": "firstapp.employee",
+    "pk": 6,
+    "fields": {
+        "eno": 103,
+        "ename": "chai",
+        "esal": 150000.0,
+        "eaddr": "germany"
+    }
+}
+]
+C:\Users\abc\Desktop\django\restapi\firstproject>py test.py
+200
+{'msg': 'Resource updated successfully'}
+C:\Users\abc\Desktop\django\restapi\firstproject>py manage.py dumpdata firstapp.Employee --indent 4
+[
+{
+    "model": "firstapp.employee",
+    "pk": 6,
+    "fields": {
+        "eno": 103,
+        "ename": "chai",
+        "esal": 25000.0,
+        "eaddr": "delhi"
+    }
+}
+]
+
+delete a particular record?
+(1, {'firstapp.Employee': 1})
+
+C:\Users\abc\Desktop\django\restapi\firstproject>py manage.py dumpdata firstapp.Employee --indent 4
+[
+{
+    "model": "firstapp.employee",
+    "pk": 8,
+    "fields": {
+        "eno": 100,
+        "ename": "sai",
+        "esal": 77000.0,
+        "eaddr": "guntur"
+    }
+}
+]
+
+C:\Users\abc\Desktop\django\restapi\firstproject>py test.py
+404
+{'msg': 'No matched resource found, not possible to perform deletion...'}
+
+C:\Users\abc\Desktop\django\restapi\firstproject>py test.py
+200
+{'msg': 'resources deleted successfully..'}
+
+C:\Users\abc\Desktop\django\restapi\firstproject>py manage.py dumpdata firstapp.Employee --indent 4
+[
+]
+
+get, post, put and delete over patch is pending
+
+to get a particular record info: http://127.0.0.1:8000/api/6/
+
+to get all records: http://127.0.0.1:8000/api/
+
+to create a resource: http://127.0.0.1:8000/api/
+
+to update a resource: http://127.0.0.1:8000/api/6/
+
+to delete a resource: http://127.0.0.1:8000/api/6/
+
+for 5 operations how many end points? 2
+
+for all CRUD operations, only one end point is required
+http://127.0.0.1:8000/api/ -- for all CRUD operations
+
+single endpoint rule
+
+test.py
+
+views.py
+
+urls.py
+
+
+C:\Users\abc\Desktop\django\restapi\firstproject>py manage.py dumpdata firstapp.Employee --indent 4
+[
+{
+    "model": "firstapp.employee",
+    "pk": 9,
+    "fields": {
+        "eno": 100,
+        "ename": "charan",
+        "esal": 88000.0,
+        "eaddr": "guntur"
+    }
+},
+{
+    "model": "firstapp.employee",
+    "pk": 10,
+    "fields": {
+        "eno": 101,
+        "ename": "chai",
+        "esal": 200000.0,
+        "eaddr": "germany"
+    }
+}
+]
+
+C:\Users\abc\Desktop\django\restapi\firstproject>py test.py
+400
+{'msg': 'the required resource not available with matched id'}
+
+C:\Users\abc\Desktop\django\restapi\firstproject>py test.py
+200
+[{'eno': 100, 'ename': 'charan', 'eaddr': 'guntur'}]
+C:\Users\abc\Desktop\django\restapi\firstproject>py test.py
+200
+[{'eno': 100, 'ename': 'charan', 'eaddr': 'guntur'}, {'eno': 101, 'ename': 'chai', 'eaddr': 'germany'}]
+
+--------------------------
+create resource
+
+test.py
+
+views.py
+
+C:\Users\abc\Desktop\django\restapi\firstproject>py test.py
+201
+{'msg': 'Resource created successfully'}
+
+C:\Users\abc\Desktop\django\restapi\firstproject>py test.py
+400
+{'ename': ['This field is required.']}
+
+C:\Users\abc\Desktop\django\restapi\firstproject>py test.py
+400
+{'esal': ['the min sal should be 5000']}
+-------------------
+PUT
+
+test.py
+
+views.py
+
+C:\Users\abc\Desktop\django\restapi\firstproject>py test.py
+400
+{'msg': 'to perform updation id is mandatory'}
+
+C:\Users\abc\Desktop\django\restapi\firstproject>py test.py
+404
+{'msg': 'No matched resource found, not possible to perform updation...'}
+
+C:\Users\abc\Desktop\django\restapi\firstproject>py test.py
+200
+{'msg': 'Resource updated successfully'}
+
+C:\Users\abc\Desktop\django\restapi\firstproject>py test.py
+400
+{'esal': ['the min sal should be 5000']}
+-------------------
+DELETE
+
+C:\Users\abc\Desktop\django\restapi\firstproject>py manage.py dumpdata firstapp.Employee --indent 4
+[
+{
+    "model": "firstapp.employee",
+    "pk": 9,
+    "fields": {
+        "eno": 100,
+        "ename": "charan",
+        "esal": 88000.0,
+        "eaddr": "guntur"
+    }
+},
+{
+    "model": "firstapp.employee",
+    "pk": 10,
+    "fields": {
+        "eno": 101,
+        "ename": "chai",
+        "esal": 200000.0,
+        "eaddr": "germany"
+    }
+}
+]
+
+C:\Users\abc\Desktop\django\restapi\firstproject>py test.py
+400
+{'msg': 'to perform deletion id is mandatory'}
+C:\Users\abc\Desktop\django\restapi\firstproject>py test.py
+400
+{'msg': 'the required resource not available with matched id'}
+C:\Users\abc\Desktop\django\restapi\firstproject>py test.py
+200
+{'msg': 'resources deleted successfully..'}
+
+final files for CRUD operations using single endpoint
+
+test.py
+import requests,json
+BASE_URL='http://127.0.0.1:8000/'
+ENDPOINT='api/'
+
+# # def get_resource(id):
+# def get_resource(id=None):
+#     data={}
+#     if id is not None:
+#         data={
+#             'id':id,
+#         }
+#     # resp=requests.get(BASE_URL+ENDPOINT+id+'/')
+#     # resp=requests.get(BASE_URL+ENDPOINT,data=data)
+#     resp=requests.get(BASE_URL+ENDPOINT,data=json.dumps(data))
+#     print(resp.status_code)
+#     print(resp.json())
+# # id=input('Enter some ID:')
+# # get_resource(id)
+# # get_resource(8) # this id not available we will get error
+# # get_resource(9) # available, we will get particular 9 record
+# get_resource() # will get all records
+
+# def get_all():    
+#     resp=requests.get(BASE_URL+ENDPOINT)
+#     print(resp.status_code)
+#     print(resp.json())
+# # get_all()
+
+# def create_resource():
+#     new_emp={
+#         'eno':103,
+#         'ename':'amma',
+#         # 'esal':1000, #to check validation
+#         'esal':150000,
+#         'eaddr':'home',
+#     }
+#     # resp=requests.post(BASE_URL+ENDPOINT,data=new_emp) # used to check validation working or not?
+#     resp=requests.post(BASE_URL+ENDPOINT,data=json.dumps(new_emp))
+#     print(resp.status_code)
+#     print(resp.json())
+# create_resource()
+
+# def update_resource(id):
+# def update_resource(id=None):
+#     new_emp={
+#         'id':id,
+#         # 'esal':250000,
+#         'esal':1000,
+#         'eaddr':'delhi', 
+#     }
+#     # resp=requests.put(BASE_URL+ENDPOINT+str(id)+'/',data=new_emp)
+#     # resp=requests.put(BASE_URL+ENDPOINT+str(id)+'/',data=json.dumps(new_emp))
+#     resp=requests.put(BASE_URL+ENDPOINT,data=json.dumps(new_emp))
+#     print(resp.status_code)
+#     print(resp.json())
+
+# # update_resource(6)
+# update_resource(9)
+
+# def delete_resource(id):
+def delete_resource(id=None):
+    data={
+        'id':id
+    }
+    # resp=requests.delete(BASE_URL+ENDPOINT+str(id)+'/')
+    resp=requests.delete(BASE_URL+ENDPOINT,data=json.dumps(data))
+    print(resp.status_code)
+    print(resp.json())
+
+# delete_resource()
+# delete_resource(4)
+delete_resource(9)
+
+views.py
+from django.shortcuts import render
+from django.views.generic import View
+from firstapp.models import Employee
+import json
+from django.http import HttpResponse
+from django.core.serializers import serialize
+
+from firstapp.forms import EmployeeForm
+from firstapp.utils import is_json
+from django.views.decorators.csrf import csrf_exempt
+from django.utils.decorators import method_decorator
+
+from firstapp.mixins import SerializeMixin,HttpResponseMixin  
+# Create your views here.
+@method_decorator(csrf_exempt,name='dispatch')
+class EmployeeDetailCBV(HttpResponseMixin ,SerializeMixin,View):
+    def get(self,request,id,*args,**kwargs):
+        try:
+            emp=Employee.objects.get(id=id) 
+        
+        except Employee.DoesNotExist:
+            json_data=json.dumps({'msg':'the requested resource not available'})
+            
+            return self.render_to_http_response(json_data,status=404)
+        else:
+            json_data=self.serialize([emp,])
+        
+        return self.render_to_http_response(json_data)
+    
+    def put(self, request, id, *args, **kwargs):
+        emp = self.get_object_by_id(id)
+        if emp is None:
+            json_data = json.dumps({'msg': 'No matched resource found, not possible to perform updation...'})
+            return self.render_to_http_response(json_data, status=404)
+        
+        data = request.body
+        valid_json = is_json(data)
+        if not valid_json:
+            json_data = json.dumps({'msg': 'Please send valid JSON data only'})
+            return self.render_to_http_response(json_data, status=400)
+
+        provided_data = json.loads(data)
+
+        original_data = {
+            'eno': emp.eno,
+            'ename': emp.ename,
+            'esal': emp.esal,
+            'eaddr': emp.eaddr,
+        }
+
+        original_data.update(provided_data)
+        form = EmployeeForm(original_data, instance=emp)  # Correct `isinstance`
+        
+        if form.is_valid():
+            form.save(commit=True)
+            json_data = json.dumps({'msg': 'Resource updated successfully'})
+            return self.render_to_http_response(json_data, status=200)
+
+        json_data = json.dumps(form.errors)
+        return self.render_to_http_response(json_data, status=400)
+    
+    def delete(self,request,id,*args,**kwargs):
+        emp = self.get_object_by_id(id)
+        if emp is None:
+            json_data = json.dumps({'msg': 'No matched resource found, not possible to perform deletion...'})
+            return self.render_to_http_response(json_data, status=404)
+        
+        # t=emp.delete()
+        # print(t)
+        status,record=emp.delete()
+        
+        if status==1:
+            json_data=json.dumps({'msg':'resources deleted successfully..'})
+            return self.render_to_http_response(json_data)
+        json_data = json.dumps({'msg': 'unable to delete, plz try again...'})
+        return self.render_to_http_response(json_data, status=404)
+
+    
+    # def put(self,request,id,*args,**kwargs):
+    #     # try:
+    #     #     emp=Employee.objects.get(id=id) 
+    #     # except Employee.DoesNotExist:
+    #     #     emp=None
+    #     emp=self.get_object_by_id(id)
+    #     if emp is None:
+    #         json_data=json.dumps({'msg':'no matched resource found, not possible to perform updation...'})
+    #         return self.render_to_http_response(json_data,status=404)
+        
+    #     data=request.body
+    #     valid_json=is_json(data)
+    #     if not valid_json:
+    #         json_data = json.dumps({'msg': 'Please send valid JSON data only'})
+    #         return self.render_to_http_response(json_data, status=400)
+    #     provided_data=json.loads(data)
+
+    #     original_data={
+    #         'eno':emp.eno,
+    #         'ename':emp.ename,
+    #         'esal':emp.esal,
+    #         'eaddr':emp.eaddr,
+    #     }
+
+    #     original_data.update(provided_data)
+    #     form=EmployeeForm(original_data, isinstance=emp)
+    #     if form.is_valid():
+    #         form.save(commit=True)
+    #         json_data = json.dumps({'msg': 'Resource updated successfully'})
+    #         return self.render_to_http_response(json_data, status=201)  # Corrected status
+        
+    #     # Ensure validation errors are returned properly
+    #     json_data = json.dumps(form.errors)  
+    #     return self.render_to_http_response(json_data, status=400)  # Moved outside of if-block
+
+
+
+# from firstapp.forms import EmployeeForm
+# from firstapp.utils import is_json
+# from django.views.decorators.csrf import csrf_exempt
+# from django.utils.decorators import method_decorator
+# @method_decorator(csrf_exempt,name='dispatch')
+# class EmployeeListCBV(HttpResponseMixin,SerializeMixin,View):
+#     def get(self,request,*args,**kwargs): 
+#         qs=Employee.objects.all() 
+#         json_data=self.serialize(qs)
+#         return HttpResponse(json_data,content_type='application/json')
+    
+#     def post(self,request,*args,**kwargs):
+#         data=request.body
+#         valid_json=is_json(data)
+#         if not valid_json:
+#             json_data=json.dumps({'msg':'please send valid only'})
+#             return self.render_to_http_response(json_data,status=400)
+#         empdata=json.loads(data)
+#         form=EmployeeForm(empdata)
+#         if form.is_valid():
+#             form.save(commit=True)
+#             json_data=json.dumps({'msg':'resource created successfully'})
+#         # json_data=json.dumps({'msg':'you provided valid data only'}) # for checking purpose
+#         # json_data=json.dumps({'msg':'this is from post method'}) # just for checking purpose
+#         return self.render_to_http_response(json_data)
+    
+#         if form.errors:
+#             json_data=json.dumps(form.errors)
+#             return self.render_to_http_response(json_data,status=400)
+
+
+
+
+class EmployeeListCBV(HttpResponseMixin,SerializeMixin,View):
+    def get(self,request,*args,**kwargs): 
+        qs=Employee.objects.all() 
+        json_data=self.serialize(qs)
+        return HttpResponse(json_data,content_type='application/json')
+
+    def post(self, request, *args, **kwargs):
+        data = request.body
+        valid_json = is_json(data)
+        
+        if not valid_json:
+            json_data = json.dumps({'msg': 'Please send valid JSON data only'})
+            return self.render_to_http_response(json_data, status=400)
+        
+        empdata = json.loads(data)
+        form = EmployeeForm(empdata)
+        if form.is_valid():
+            form.save(commit=True)
+            json_data = json.dumps({'msg': 'Resource created successfully'})
+            return self.render_to_http_response(json_data, status=201)  # Corrected status
+        
+        # Ensure validation errors are returned properly
+        json_data = json.dumps(form.errors)  
+        return self.render_to_http_response(json_data, status=400)  # Moved outside of if-block
+
+@method_decorator(csrf_exempt,name='dispatch')
+class EmployeeCRUDCBV(HttpResponseMixin,SerializeMixin,View):
+    def get_object_by_id(self,id):
+        try:
+            emp=Employee.objects.get(id=id)
+                   
+        except Employee.DoesNotExist:
+            emp=None
+        return emp
+
+    def get(self,request,*args,**kwargs):
+        data=request.body
+        valid_json=is_json(data)
+        if not valid_json:
+            json_data = json.dumps({'msg': 'Please send valid JSON data only'})
+            return self.render_to_http_response(json_data, status=400)
+        pdata=json.loads(data)
+        id=pdata.get('id',None)
+
+        if id is not None:
+            emp=self.get_object_by_id(id=id)
+            if emp is None:
+                json_data=json.dumps({'msg':'the required resource not available with matched id'})
+                return self.render_to_http_response(json_data,status=400)
+            json_data=self.serialize([emp,])
+            return self.render_to_http_response(json_data)
+        
+        qs=Employee.objects.all() 
+        json_data=self.serialize(qs)
+        return self.render_to_http_response(json_data)
+    
+    def post(self, request, *args, **kwargs):
+        data = request.body
+        valid_json = is_json(data)
+        
+        if not valid_json:
+            json_data = json.dumps({'msg': 'Please send valid JSON data only'})
+            return self.render_to_http_response(json_data, status=400)
+        
+        empdata = json.loads(data)
+        form = EmployeeForm(empdata)
+        if form.is_valid():
+            form.save(commit=True)
+            json_data = json.dumps({'msg': 'Resource created successfully'})
+            return self.render_to_http_response(json_data, status=201)  # Corrected status
+        
+        # Ensure validation errors are returned properly
+        json_data = json.dumps(form.errors)  
+        return self.render_to_http_response(json_data, status=400)
+    
+    def put(self,request,*args,**kwargs):
+        data=request.body
+        valid_json=is_json(data)
+        if not valid_json:
+            json_data = json.dumps({'msg': 'Please send valid JSON data only'})
+            return self.render_to_http_response(json_data, status=400)
+        
+        pdata=json.loads(data)
+        id=pdata.get('id',None)
+
+        if id is None:
+                json_data=json.dumps({'msg':'to perform updation id is mandatory'})
+                return self.render_to_http_response(json_data,status=400)
+        
+        emp=self.get_object_by_id(id=id)
+        if emp is None:
+            json_data = json.dumps({'msg': 'No matched resource found, not possible to perform updation...'})
+            return self.render_to_http_response(json_data, status=404)
+        
+        provided_data = json.loads(data)
+
+        original_data = {
+            'eno': emp.eno,
+            'ename': emp.ename,
+            'esal': emp.esal,
+            'eaddr': emp.eaddr,
+        }
+
+        original_data.update(provided_data)
+        form = EmployeeForm(original_data, instance=emp)  # Correct `isinstance`
+        
+        if form.is_valid():
+            form.save(commit=True)
+            json_data = json.dumps({'msg': 'Resource updated successfully'})
+            return self.render_to_http_response(json_data, status=200)
+
+        json_data = json.dumps(form.errors)
+        return self.render_to_http_response(json_data, status=400)
+    
+    def delete(self,request,*args,**kwargs):
+        data=request.body
+        valid_json=is_json(data)
+        if not valid_json:
+            json_data = json.dumps({'msg': 'Please send valid JSON data only'})
+            return self.render_to_http_response(json_data, status=400)
+        
+        pdata=json.loads(data)
+        id=pdata.get('id',None)
+
+        if id is not None:
+            emp=self.get_object_by_id(id=id)
+            if emp is None:
+                json_data=json.dumps({'msg':'the required resource not available with matched id'})
+                return self.render_to_http_response(json_data,status=400)
+            
+            status,record=emp.delete()
+        
+            if status==1:
+                json_data=json.dumps({'msg':'resources deleted successfully..'})
+                return self.render_to_http_response(json_data)
+            json_data = json.dumps({'msg': 'unable to delete, plz try again...'})
+            return self.render_to_http_response(json_data, status=404)
+        
+        json_data=json.dumps({'msg':'to perform deletion id is mandatory'})
+        return self.render_to_http_response(json_data,status=400)
+            
+urls.py
+from django.contrib import admin
+from django.urls import path
+from firstapp import views
+
+urlpatterns = [
+    path('admin/', admin.site.urls),
+    path('api/<int:id>/', views.EmployeeDetailCBV.as_view()),
+    # path('api/', views.EmployeeListCBV.as_view()),
+    path('api/', views.EmployeeCRUDCBV.as_view()),
+]
+
+remaining files are same, no change
+
+similarly CRUD on Student (same code instead of employee will use student)
+==============================================================================
+Django REST framework is a powerful and flexible toolkit for building Web APIs.
+
+Some reasons you might want to use REST framework:
+
+The Web browsable API is a huge usability win for your developers.
+Authentication policies including packages for OAuth1a and OAuth2.
+Serialization that supports both ORM and non-ORM data sources.
+Customizable all the way down - just use regular function-based views if you don't need the more powerful features.
+Extensive documentation, and great community support.
+Used and trusted by internationally recognised companies including Mozilla, Red Hat, Heroku, and Eventbrite.
+
+Developing web API using 3rd party django REST framework(DRF)
+https://www.django-rest-framework.org/
+REST framework requires the following:
+
+Django (4.2, 5.0, 5.1)
+Python (3.8, 3.9, 3.10, 3.11, 3.12, 3.13)
+
+C:\Users\abc\Desktop\django\restapi\firstproject>python --version
+Python 3.12.4
+
+C:\Users\abc\Desktop\django\restapi\firstproject>django-admin --version
+5.1.4
+
+Installation
+Install using pip, including any optional packages you want...
+
+pip install djangorestframework
+pip install markdown       # Markdown support for the browsable API.
+pip install django-filter  # Filtering support
+
+pip freeze > requirements.txt -- then find requirements.txt in the following path C:\Users\abc\Desktop\django
+
+C:\Users\abc\Desktop\django\restapi>django-admin startproject firstproject
+
+C:\Users\abc\Desktop\django\restapi>cd firstproject
+
+C:\Users\abc\Desktop\django\restapi\firstproject>py manage.py startapp firstapp
+
+add firstapp in settings.py
+INSTALLED_APPS = [
+    'django.contrib.admin',
+    'django.contrib.auth',
+    'django.contrib.contenttypes',
+    'django.contrib.sessions',
+    'django.contrib.messages',
+    'django.contrib.staticfiles',
+    'firstapp'
+]
+
+Add 'rest_framework' to your INSTALLED_APPS setting.
+
+INSTALLED_APPS = [
+    'django.contrib.admin',
+    'django.contrib.auth',
+    'django.contrib.contenttypes',
+    'django.contrib.sessions',
+    'django.contrib.messages',
+    'django.contrib.staticfiles',
+    'firstapp',
+    'rest_framework'
+]
+
+If you're intending to use the browsable API you'll probably also want to add REST framework's login and logout views. Add the following to your root urls.py file.
+
+urlpatterns = [
+    ...
+    path('api-auth/', include('rest_framework.urls'))
+]
+
+C:\Users\abc\Desktop\django\restapi\firstproject\firstproject\urls.py
+from django.contrib import admin
+from django.urls import path,include
+
+urlpatterns = [
+    path('admin/', admin.site.urls),
+    path('api-auth/', include('rest_framework.urls'))
+]
+
+serializers:
+DRF serializers are responsible for 3 activities
+serialization
+deserialization
+validation
+
+note: drf serializers will work very similar to django forms and ModerlForm classes
+
+serialization:
+emp=Employee.objects.get(id=1)
+qs=Employee.objects.all()
+
+the process of converting complex data types(model instance,qs) into python native data type (like dict) is called serialization
+the advantage is converting to json very easy
+
+C:\Users\abc\Desktop\django\restapi\firstproject\firstapp\models.py
+from django.db import models
+
+# Create your models here.
+class Employee(models.Model):
+    eno=models.IntegerField()
+    ename=models.CharField(max_length=64)
+    esal=models.FloatField()
+    eaddr=models.CharField(max_length=64)
+
+C:\Users\abc\Desktop\django\restapi\firstproject\firstapp\serializers.py
+from rest_framework import serializers
+
+class EmployeeSerializer(serializers.Serializer):
+    eno=serializers.IntegerField()
+    ename=serializers.CharField(max_length=64)
+    esal=serializers.FloatField()
+    eaddr=serializers.CharField(max_length=64)
+
+makemigrations and migrate
+C:\Users\abc\Desktop\django\restapi\firstproject>py manage.py makemigrations
+No changes detected
+
+C:\Users\abc\Desktop\django\restapi\firstproject>py manage.py migrate
+Operations to perform:
+  Apply all migrations: admin, auth, contenttypes, firstapp, sessions
+Running migrations:
+  No migrations to apply.
+
+
+C:\Users\abc\Desktop\django\restapi\firstproject\firstapp\admin.py
+from django.contrib import admin
+from firstapp.models import Employee
+
+# Register your models here
+class EmployeeAdmin(admin.ModelAdmin):
+    list_display=['eno','ename','esal','eaddr']
+admin.site.register(Employee,EmployeeAdmin)
+
+create super user and add some data
+C:\Users\abc\Desktop\django\restapi\firstproject>py manage.py createsuperuser
+Username: abc
+Error: That username is already taken.
+
+serialization:
+employee object
+model instance --> python dict
+
+how to do serialization:
+converting Employee object to python native type(dict)
+
+C:\Users\abc\Desktop\django\restapi\firstproject>py manage.py shell
+Python 3.12.4 (tags/v3.12.4:8e8a4ba, Jun  6 2024, 19:30:16) [MSC v.1940 64 bit (AMD64)] on win32
+Type "help", "copyright", "credits" or "license" for more information.
+(InteractiveConsole)
+>>> from firstapp.models import Employee
+>>> from firstapp.serializers import EmployeeSerializer
+>>> emp=Employee.objects.get(id=10)
+>>> emp
+<Employee: Employee object (10)>
+>>> eserializer=EmployeeSerializer(emp)
+>>> eserializer.data
+{'eno': 101, 'ename': 'chai', 'esal': 200000.0, 'eaddr': 'germany'}
+
+how to convert python native type to json data
+>>> from rest_framework.renderers import JSONRenderer
+>>> json_data=JSONRenderer().render(eserializer.data)
+>>> json_data
+b'{"eno":101,"ename":"chai","esal":200000.0,"eaddr":"germany"}'
+
+how to peform serialization for qs(queryset):
+>>> qs=Employee.objects.all()
+>>> eserializer=EmployeeSerializer(qs,many=True)
+>>> eserializer.data
+[{'eno': 101, 'ename': 'chai', 'esal': 200000.0, 'eaddr': 'germany'}, {'eno': 103, 'ename': 'amma', 'esal': 150000.0, 'eaddr': 'home'}]
+
+Deserialization:
+the process of converting python native data types(dict) into DB supported complex type(model instance,qs) is called deserialization
+
+converting json to python native data type
+import io
+from rest_framework.parsers import JSONParser
+stream=io.BytesIO(json_data)
+pdata=JSONParser().parse(stream)
+
+by using deserialization we will convert python data type to db supported complex type:
+serializer=EmployeeSerializer(data=pdata)
+serializer.is_valid()
+serializer.validated_data
+
+usecase of serialization and deserialization:
+partner app want all employee records in json format
+qs-- python native data type (serialization)
+python native data type -- json data(JSONRenderer().render())
+
+partner app sending json data to create a new employee
+json data -- python native data type (JSONParser().parse())
+python native data type -- DB supported complex form(Deserialization)
+
+C:\Users\abc\Desktop\django\restapi\firstproject\test.py
+
+
+C:\Users\abc\Desktop\django\restapi\firstproject\firstapp\views.py
+
+C:\Users\abc\Desktop\django\restapi\firstproject>py test.py
+200
+{'eno': 101, 'ename': 'chai', 'esal': 200000.0, 'eaddr': 'germany'}
+
+C:\Users\abc\Desktop\django\restapi\firstproject>py test.py
+200
+[{'eno': 101, 'ename': 'chai', 'esal': 200000.0, 'eaddr': 'germany'}, {'eno': 103, 'ename': 'amma', 'esal': 150000.0, 'eaddr': 'home'}]
+
+POST:
+we have to override create() method in serializer class
+
+C:\Users\abc\Desktop\django\restapi\firstproject\test.py
+import requests,json
+BASE_URL='http://127.0.0.1:8000/'
+ENDPOINT='api/'
+
+# # def get_resource(id):
+# def get_resource(id=None):
+#     data={}
+#     if id is not None:
+#         data={
+#             'id':id
+#         }
+    
+#     resp=requests.get(BASE_URL+ENDPOINT,data=json.dumps(data))
+#     print(resp.status_code)
+#     print(resp.json())
+# # get_resource() # will get all records
+# get_resource(9)
+
+def create_resource():
+    new_emp={
+        'eno':102,
+        'ename':'nanna',
+        # 'esal':1000, #to check validation
+        'esal':150000,
+        'eaddr':'home',
+    }
+    # resp=requests.post(BASE_URL+ENDPOINT,data=new_emp) # used to check validation working or not?
+    resp=requests.post(BASE_URL+ENDPOINT,data=json.dumps(new_emp))
+    print(resp.status_code)
+    print(resp.json())
+create_resource()
+
+
+C:\Users\abc\Desktop\django\restapi\firstproject\firstapp\serializers.py
+from rest_framework import serializers
+from firstapp.models import Employee 
+
+class EmployeeSerializer(serializers.Serializer):
+    eno=serializers.IntegerField()
+    ename=serializers.CharField(max_length=64)
+    esal=serializers.FloatField()
+    eaddr=serializers.CharField(max_length=64)
+
+    def create(self,validated_data):
+        return Employee.objects.create(**validated_data)
+
+C:\Users\abc\Desktop\django\restapi\firstproject\firstapp\views.py
+from django.shortcuts import render 
+from django.views.generic import View 
+import io 
+from rest_framework.parsers import JSONParser 
+from rest_framework.renderers import JSONRenderer 
+from django.http import HttpResponse
+from firstapp.models import Employee
+from firstapp.serializers import EmployeeSerializer
+from django.views.decorators.csrf import csrf_exempt
+from django.utils.decorators import method_decorator 
+
+# Create your views here.
+@method_decorator(csrf_exempt,name='dispatch') 
+class EmployeeCRDCBV(View):
+    def get(self, request, *args, **kwargs):
+        json_data = request.body 
+        stream=io.BytesIO(json_data) 
+        pdata = JSONParser().parse(stream) 
+        id=pdata.get('id', None) 
+        if id is not None:
+            emp=Employee.objects.get(id=id) 
+            serializer=EmployeeSerializer(emp) 
+            json_data = JSONRenderer().render (serializer.data) 
+            return HttpResponse(json_data,content_type='application/json')
+        
+        qs=Employee.objects.all()
+        serializer=EmployeeSerializer(qs,many=True)
+        json_data=JSONRenderer().render(serializer.data)
+        return HttpResponse(json_data,content_type='application/json')
+    
+    def post(self,request,*args,**kwargs):
+        json_data=request.body
+        stream=io.BytesIO(json_data)
+        pdata=JSONParser().parse(stream)
+        serializer=EmployeeSerializer(data=pdata)
+        if serializer.is_valid():
+            serializer.save()
+            msg={'msg':'Resource created successfully...'}
+            json_data=JSONRenderer().render(msg)
+            return HttpResponse(json_data,content_type='application/json')
+        
+        json_data=JSONRenderer().render(serializer.error)
+        return HttpResponse(json_data,content_type='application/json')
+
+C:\Users\abc\Desktop\django\restapi\firstproject\firstproject\urls.py
+from django.contrib import admin
+from django.urls import path,include
+from firstapp import views
+
+urlpatterns = [
+    path('admin/', admin.site.urls),
+    path('api-auth/', include('rest_framework.urls')),
+    path('api/', views.EmployeeCRDCBV.as_view()),
+]
+
+no change in models.py and admin.py
+
+C:\Users\abc\Desktop\django\restapi\firstproject>py test.py
+200
+{'msg': 'Resource created successfully...'}
+===============================
+get()
+post():
+	create() we are overriding
+put():
+	updation
+	partial updation or full updation
+	update() method overrilde in serializer class
+
+update record with pk-1 with provided data
+	--> existing instance, provided data must be required
+
+C:\Users\abc\Desktop\django\restapi\firstproject\firstapp\serializers.py
+
+
+C:\Users\abc\Desktop\django\restapi\firstproject>py test.py
+400
+{'eno': ['This field is required.'], 'ename': ['This field is required.']}
+
+we provided only 2 fields
+provide all fields in test.py then run
+
+C:\Users\abc\Desktop\django\restapi\firstproject>py test.py
+200
+{'msg': 'Resource Updated Successfully...'}
+
+for partial updation we have to give serializer=EmployeeSerializer(emp,data=pdata,partial=True)
+
+C:\Users\abc\Desktop\django\restapi\firstproject>py test.py
+200
+{'msg': 'Resource Updated Successfully...'}
+
+DELETE:
+
+serializers: 
+1.Serialization 
+2. Deserialization 
+3. Validation 
+
+Validations by using serializers: 
+1.Field level validation: #highest priority
+esal minimum 5000 
+
+2.Object level validation: 
+if ename is sunny then compulsaory esal should be min 50000 
+
+3. By using validators: in-built thta we will discus
+
+1.Field level validation: 
+	esal minimum 5000
+
+	clean_esal()
+	clean()
+
+	validate_esal()
+	validate()
+
+2.Object level validations:
+if ename is sunny then compulsory esal should be 50000
+
+
+C:\Users\abc\Desktop\django\restapi\firstproject\test.py
+import requests,json
+BASE_URL='http://127.0.0.1:8000/'
+ENDPOINT='api/'
+
+# # def get_resource(id):
+# def get_resource(id=None):
+#     data={}
+#     if id is not None:
+#         data={
+#             'id':id
+#         }
+    
+#     resp=requests.get(BASE_URL+ENDPOINT,data=json.dumps(data))
+#     print(resp.status_code)
+#     print(resp.json())
+# # get_resource() # will get all records
+# get_resource(9)
+
+# def create_resource():
+#     new_emp={
+#         'eno':102,
+#         'ename':'nanna',
+#         # 'esal':1000, #to check validation
+#         'esal':150000,
+#         'eaddr':'home',
+#     }
+#     # resp=requests.post(BASE_URL+ENDPOINT,data=new_emp) # used to check validation working or not?
+#     resp=requests.post(BASE_URL+ENDPOINT,data=json.dumps(new_emp))
+#     print(resp.status_code)
+#     print(resp.json())
+# create_resource()
+
+def update_resource(id=None):
+    new_emp={
+        'id':id,
+        # 'eno':103,
+        # 'ename':'chaitu',
+        'ename':'amma',
+        # 'ename':'amma aruna',
+        # 'esal':250000,
+        # 'esal':1000,
+        'esal':2000,
+        # 'esal':3000,
+        'eaddr':'netherlands', 
+    }
+
+    resp=requests.put(BASE_URL+ENDPOINT,data=json.dumps(new_emp))
+    print(resp.status_code)
+    print(resp.json())
+
+update_resource(11)
+
+# def delete_resource(id=None):
+#     data={
+#         'id':id
+#     }
+
+#     resp=requests.delete(BASE_URL+ENDPOINT,data=json.dumps(data))
+#     print(resp.status_code)
+#     print(resp.json())
+
+# delete_resource(12)
+
+
+
+C:\Users\abc\Desktop\django\restapi\firstproject\firstapp\views.py
+from django.shortcuts import render 
+from django.views.generic import View 
+import io 
+from rest_framework.parsers import JSONParser 
+from rest_framework.renderers import JSONRenderer 
+from django.http import HttpResponse
+from firstapp.models import Employee
+from firstapp.serializers import EmployeeSerializer
+from django.views.decorators.csrf import csrf_exempt
+from django.utils.decorators import method_decorator 
+
+# Create your views here.
+@method_decorator(csrf_exempt,name='dispatch') 
+class EmployeeCRDCBV(View):
+    def get(self, request, *args, **kwargs):
+        json_data = request.body 
+        stream=io.BytesIO(json_data) 
+        pdata = JSONParser().parse(stream) 
+        id=pdata.get('id', None) 
+        if id is not None:
+            emp=Employee.objects.get(id=id) 
+            serializer=EmployeeSerializer(emp) 
+            json_data = JSONRenderer().render (serializer.data) 
+            return HttpResponse(json_data,content_type='application/json')
+        
+        qs=Employee.objects.all()
+        serializer=EmployeeSerializer(qs,many=True)
+        json_data=JSONRenderer().render(serializer.data)
+        return HttpResponse(json_data,content_type='application/json')
+    
+    def post(self,request,*args,**kwargs):
+        json_data=request.body
+        stream=io.BytesIO(json_data)
+        pdata=JSONParser().parse(stream)
+        serializer=EmployeeSerializer(data=pdata)
+        if serializer.is_valid():
+            serializer.save()
+            msg={'msg':'Resource created successfully...'}
+            json_data=JSONRenderer().render(msg)
+            return HttpResponse(json_data,content_type='application/json')
+        
+        json_data=JSONRenderer().render(serializer.error)
+        return HttpResponse(json_data,content_type='application/json')
+    
+    def put(self,request,*args,**kwargs):
+        json_data=request.body
+        stream=io.BytesIO(json_data)
+        pdata=JSONParser().parse(stream)
+        id=pdata.get('id')
+        emp=Employee.objects.get(id=id)
+        serializer=EmployeeSerializer(emp,data=pdata,partial=True)
+        if serializer.is_valid():
+            serializer.save()
+            msg={'msg':'Resource Updated Successfully...'}
+            json_data=JSONRenderer().render(msg)
+            return HttpResponse(json_data,content_type='application/json')
+        
+        json_data=JSONRenderer().render(serializer.errors)
+        return HttpResponse(json_data,content_type='application/json',status=400)
+    
+    def delete(self,request,*args,**kwargs):
+        json_data=request.body
+        stream=io.BytesIO(json_data)
+        pdata=JSONParser().parse(stream)
+        id=pdata.get('id')
+        emp=Employee.objects.get(id=id)
+        emp.delete()
+        msg={'msg':'Resource Deleted Successfully...'}
+        json_data=JSONRenderer().render(msg)
+        return HttpResponse(json_data,content_type='application/json')
+            
+
+            
+C:\Users\abc\Desktop\django\restapi\firstproject\firstapp\serializers.py
+from rest_framework import serializers
+from firstapp.models import Employee 
+
+def multiples_of_1000(value):
+    print('validation by validator attribute')
+    if value%1000!=0:
+        raise serializers.ValidationError('Employee salary should be multiples of 1000')
+
+class EmployeeSerializer(serializers.Serializer):
+    eno=serializers.IntegerField()
+    ename=serializers.CharField(max_length=64)
+    # ename=serializers.CharField(max_length=4)
+    esal=serializers.FloatField(validators=[multiples_of_1000])
+    eaddr=serializers.CharField(max_length=64)
+
+    def validate_esal(self,value):
+        print('field level validation')
+        if value<2000:
+            raise serializers.ValidationError('Employee salary should be minimum 2000')
+        return value
+    
+    def validate(self,data):
+        print('object level validation')
+        ename=data.get('ename')
+        esal=data.get('esal')
+        if ename.lower()=='amma':
+            if esal<3000:
+                raise serializers.ValidationError('amma salary should be minimum 3000')
+        return data
+
+    def create(self,validated_data):
+        return Employee.objects.create(**validated_data)
+    
+    def update(self,instance,validated_data):
+        instance.eno=validated_data.get('eno',instance.eno)
+        instance.ename=validated_data.get('ename',instance.ename)
+        instance.esal=validated_data.get('esal',instance.esal)
+        instance.eaddr=validated_data.get('eaddr',instance.eaddr)
+        instance.save()
+        return instance
+    
+
+C:\Users\abc\Desktop\django\restapi\firstproject>py test.py
+200
+{'msg': 'Resource Deleted Successfully...'}
+
+C:\Users\abc\Desktop\django\restapi\firstproject>py test.py
+400
+{'esal': ['Employee salary should be minimum 5000']}
+
+C:\Users\abc\Desktop\django\restapi\firstproject>py test.py
+400
+{'non_field_errors': ['amma salary should be minimum 2000']}
+
+[22/Mar/2025 21:31:58] "PUT /api/ HTTP/1.1" 500 95964
+field level validation
+object level validation
+
+C:\Users\abc\Desktop\django\restapi\firstproject>py test.py
+400
+{'esal': ['Employee salary should be minimum 2000']}
+C:\Users\abc\Desktop\django\restapi\firstproject>py test.py
+400
+{'non_field_errors': ['amma salary should be minimum 3000']}
+C:\Users\abc\Desktop\django\restapi\firstproject>py test.py
+200
+{'msg': 'Resource Updated Successfully...'}
+
+C:\Users\abc\Desktop\django\restapi\firstproject>py test.py
+400
+{'ename': ['Ensure this field has no more than 4 characters.']}
+
+priority
+validator
+field level
+object level
+
+C:\Users\abc\Desktop\django\restapi\firstproject>py test.py
+400
+{'esal': ['Employee salary should be multiples of 1000']}
+
+validation by validator attribute
+Bad Request: /api/
+[22/Mar/2025 21:56:02] "PUT /api/ HTTP/1.1" 400 56
+
+validation by validator attribute
+field level validation
+object level validation
+Bad Request: /api/
+[22/Mar/2025 22:04:05] "PUT /api/ HTTP/1.1" 400 59
+
+problems with normal serializers:
+we have to define all fields like(eno,ename,esal,...)
+implement create() and update() methods explicitly
+
+we should go for ModelSerializer
+===============================
+DRF:
+Install DRF
+Serializers: 	
+	Serialization
+	Deserialization
+	validatons
+
+problems with normal serialization:
+we have to define all fields(like eno,ename,esal,..)
+implement create() and update() methods explicitly
+
+we should go for ModelSerializer
+
+C:\Users\abc\Desktop\django\restapi\firstproject\firstapp\serializers.py
+from rest_framework import serializers
+from firstapp.models import Employee 
+
+def multiples_of_1000(value):
+    print('validation by validator attribute')
+    if value%1000!=0:
+        raise serializers.ValidationError('Employee salary should be multiples of 1000')
+
+class EmployeeSerializer(serializers.ModelSerializer):
+    class Meta:
+        model=Employee
+        fields='__all__'
+
+# class EmployeeSerializer(serializers.Serializer):
+#     eno=serializers.IntegerField()
+#     ename=serializers.CharField(max_length=64)
+#     # ename=serializers.CharField(max_length=4)
+#     esal=serializers.FloatField(validators=[multiples_of_1000])
+#     eaddr=serializers.CharField(max_length=64)
+
+#     def validate_esal(self,value):
+#         print('field level validation')
+#         if value<2000:
+#             raise serializers.ValidationError('Employee salary should be minimum 2000')
+#         return value
+    
+#     def validate(self,data):
+#         print('object level validation')
+#         ename=data.get('ename')
+#         esal=data.get('esal')
+#         if ename.lower()=='amma':
+#             if esal<3000:
+#                 raise serializers.ValidationError('amma salary should be minimum 3000')
+#         return data
+
+#     def create(self,validated_data):
+#         return Employee.objects.create(**validated_data)
+    
+#     def update(self,instance,validated_data):
+#         instance.eno=validated_data.get('eno',instance.eno)
+#         instance.ename=validated_data.get('ename',instance.ename)
+#         instance.esal=validated_data.get('esal',instance.esal)
+#         instance.eaddr=validated_data.get('eaddr',instance.eaddr)
+#         instance.save()
+#         return instance
+    
+
+C:\Users\abc\Desktop\django\restapi\firstproject\test.py
+import requests,json,time
+BASE_URL='http://127.0.0.1:8000/'
+ENDPOINT='api/'
+
+print('get request')
+# def get_resource(id):
+def get_resource(id=None):
+    data={}
+    if id is not None:
+        data={
+            'id':id
+        }
+    
+    resp=requests.get(BASE_URL+ENDPOINT,data=json.dumps(data))
+    print(resp.status_code)
+    print(resp.json())
+# get_resource() # will get all records
+get_resource(11)
+# get_resource()
+time.sleep(10)
+
+print('post request')
+def create_resource():
+    new_emp={
+        'eno':102,
+        'ename':'nanna',
+        # 'esal':1000, #to check validation
+        'esal':150000,
+        'eaddr':'home',
+    }
+    # resp=requests.post(BASE_URL+ENDPOINT,data=new_emp) # used to check validation working or not?
+    resp=requests.post(BASE_URL+ENDPOINT,data=json.dumps(new_emp))
+    print(resp.status_code)
+    print(resp.json())
+create_resource()
+time.sleep(15)
+
+print('update request')
+def update_resource(id=None):
+    new_emp={
+        'id':id,
+        # 'eno':103,
+        # 'ename':'chaitu',
+        'ename':'amma',
+        # 'ename':'amma aruna',
+        # 'esal':250000,
+        # 'esal':1000,
+        'esal':200000,
+        # 'esal':3000,
+        'eaddr':'netherlands', 
+    }
+
+    resp=requests.put(BASE_URL+ENDPOINT,data=json.dumps(new_emp))
+    print(resp.status_code)
+    print(resp.json())
+
+update_resource(11)
+time.sleep(15)
+
+print('delete request')
+def delete_resource(id=None):
+    data={
+        'id':id
+    }
+
+    resp=requests.delete(BASE_URL+ENDPOINT,data=json.dumps(data))
+    print(resp.status_code)
+    print(resp.json())
+
+delete_resource(11)
+
+DJANGO REST framework views:
+DRF provides 2 classes to define business logic for our API views
+APIView
+ViewSet
+
+1.APIView: 
+-->It is the most basic class to build REST APIs. It is similar to Django traditional 
+View class 
+-->It is the child class of Djangos View class. 
+-->It allows us to use standars HTTP methods as functions like get(), put(), post()etc... 
+-->We have to write complete code for business logic and hence programmer having complete control on the logic. 
+-->We can understand flow of execution very clearly. 
+-->Best suitable for complex operations like working with multiple data sources, calling other APIs etc.... 
+-->We have to define url mapping manually.
+ 
+2. ViewSet: 
+list(), create(), retrieve(), update(), partial_update(),destroy()
+developing very simple API
+CRUD API
+Router concept
+
+How to send response in API view
+C:\Users\abc\Desktop\django\restapi>django-admin startproject firstproject
+
+C:\Users\abc\Desktop\django\restapi>cd firstproject
+
+C:\Users\abc\Desktop\django\restapi\firstproject>py manage.py startapp firstapp
+
+add rest_framework and firstapp in settings.py
+
+C:\Users\abc\Desktop\django\restapi\firstproject\firstapp\views.py
+
+
+C:\Users\abc\Desktop\django\restapi\firstproject\firstproject\urls.py
+
+this is browsable api, so no third app like test.py required
+
+makemigrations and migrate
+
+then start the server and send request http://127.0.0.1:8000/api/
+
+post request:
+partner app will send some data
+some conversion is required, so serializers are required
+
+C:\Users\abc\Desktop\django\restapi\firstproject\firstapp\serializers.py
+
+2).ViewSet: 
+APIView:get(), post(), put(), patch(),delete() 
+
+ViewSet: 
+list() ---->To get all resources/records 
+
+retrieve() --->To get a specific resource 
+
+create() --->To create a new record 
+
+update() ---->To update a resource 
+
+destroy() --->To delete a record. 
+
+Mapping: 
+get()--->list and retrieve() 
+post()-->create() 
+put()-->update() 
+I 
+patch()-->partial_update() 
+delete()-->destroy()
+
+when ViewSet are best choice:
+if we want to develop a simple CRUD interface to our DB
+if we want to develop a simple and quick API to manage predefined objects
+if we are performing only standard operations with very less or no customization 
+if we are not performing any complex operations
+
+C:\Users\abc\Desktop\django\restapi\firstproject\firstapp\views.py
+from django.shortcuts import render 
+from rest_framework.views import APIView
+from rest_framework.response import Response
+from firstapp.serializers import NameSerializer
+
+# Create your views here.
+class TestAPIView(APIView):
+    def get(self,request,*args,**kwargs):
+        colors=['RED','YELLOW','GREEN','BLUE']
+        return Response({'msg':'Happy Holi...','colors':colors}) # Response class is responsible to convert python dict to json_data
+    
+    def post(self,request,*args,**kwargs):
+        serializer=NameSerializer(data=request.data)
+        if serializer.is_valid():
+            name=serializer.data.get('name')
+            msg='Hello {}, Happy Holi....'.format(name)
+            return Response({'msg':msg})
+        else:
+            return Response(serializer.errors,status=400)
+        
+    def put(self,request,*args,**kwargs):
+        return Response({'msg':'this response from PUT method of API'})
+    
+    def delete(self,request,*args,**kwargs):
+        return Response({'msg':'this response from DELETE method of API'})
+    
+    def patch(self,request,*args,**kwargs):
+        return Response({'msg':'this response from PATCH method of API'})
+    
+from rest_framework.viewsets import ViewSet
+class TestViewSet(ViewSet):
+    def list(self,request):
+        colors=['RED','YELLOW','GREEN','BLUE']
+        return Response({'msg':'Happy New Year...','colors':colors})
+
+    def retrieve(self,request,pk=None):
+        colors=['RED','YELLOW','GREEN','BLUE']
+        return Response({'msg':'This response from RETRIEVE method ViewSet'})
+
+    def update(self,request,pk=None):
+        colors=['RED','YELLOW','GREEN','BLUE']
+        return Response({'msg':'This response from UPDATE method ViewSet'}) 
+    
+    def partial_update(self,request,pk=None):
+        colors=['RED','YELLOW','GREEN','BLUE']
+        return Response({'msg':'This response from PARTIAL_UPDATE method ViewSet'})
+    
+    def destroy(self,request,pk=None):
+        colors=['RED','YELLOW','GREEN','BLUE']
+        return Response({'msg':'This response from DESTROY method ViewSet'})
+
+C:\Users\abc\Desktop\django\restapi\firstproject\firstapp\serializers.py
+from rest_framework import serializers
+
+class NameSerializer(serializers.Serializer):
+    name=serializers.CharField(max_length=10)
+
+    
+C:\Users\abc\Desktop\django\restapi\firstproject\firstproject\urls.py
+from django.contrib import admin
+from django.urls import path,include
+from firstapp import views
+
+from rest_framework.routers import DefaultRouter
+router=DefaultRouter()
+router.register('test-view-set',views.TestViewSet,basename='test-view-set')
+
+urlpatterns = [
+    path('admin/', admin.site.urls),
+    # path('api/', views.TestAPIView.as_view()),
+    path('',include(router.urls)),
+]
+
+
+ViewSet: its like cbv
+	Router will map view to urls automatically
+
+DefaultRouter class
+
+http://127.0.0.1:8000/
+http://127.0.0.1:8000/test-view-set/
+http://127.0.0.1:8000/test-view-set/1/
+
+Sangamsoft jobs project:
+	sangamjobsproject
+		settings.py
+		urls.py
+		...
+		...
+	firstapp
+		views.py(business logic to develop this app)
+		models.py
+
+		api:	# if client ask api then we will add this folder and in views we will add api code, if he doesn't need then deliver except this api folder
+		   views.py(business logic for api)
+		   urls.py(end point)
+	
+we just developed one djnago app
+end user can use our application 
+upto this: our role is app developer
+
+we have to develop API and our role will become API developer
+
+Diff b/w APIView and ViewSet
+APIView									ViewSet
+1) present in rest_framework.views module				1) present in rest_framework.viewsets modules
+2) method names reflect HTTP methods like get(),post(),put(),patch()	2) method names reflect DB Model class actions/operations like
+delete()								   list(),retrieve(),create(),update(),partial_update() and
+									   distroy()
+3) we have to map views to urls explicitly				3) we are not required to map views to urls explicitly. default
+									   Router will takes care url mappings automatically
+4) most of the business logic we have to write explicity		4) most of the business logic will be generated automatically
+5) length of the code is more						5) length of the code is less
+6) API development time is less						6) API development time is more
+7) developer has complete control over the logic 			7) developer won't have complete control over the logic 
+8) clear execution flow is possible					8) clear execution flow is not possible
+9) best suitable for complex operations like using multiple data	9) best suitable for developing simple APIs like developing 
+sources simultaneously, calling other APIs				   CRUD interface for DB Models
+=========================================
+Demo application on APIView with models
+C:\Users\abc\Desktop\django\restapi>django-admin startproject firstproject
+
+C:\Users\abc\Desktop\django\restapi>cd firstproject
+
+C:\Users\abc\Desktop\django\restapi\firstproject>py manage.py startapp firstapp
+
+add rest_framework and firstapp in settings.py
+
+C:\Users\abc\Desktop\django\restapi\firstproject\firstapp\models.py
+
+
+C:\Users\abc\Desktop\django\restapi\firstproject\firstapp\admin.py
+
+makemigrations and migrate
+
+C:\Users\abc\Desktop\django\restapi\firstproject\firstapp\serializers.py
+
+
+C:\Users\abc\Desktop\django\restapi\firstproject\firstapp\views.py
+
+
+C:\Users\abc\Desktop\django\restapi\firstproject\firstproject\urls.py
+
+
+http://127.0.0.1:8000/api/
+
+To List operations:
+ListAPIView -- class
+rest_framework.generics -- module
+
+To implement search operation:
+	get_queryset():
+		http://127.0.0.1:8000/api/
+		List all employees
+	
+		http://127.0.0.1:8000/api/ename=mma(query string)
+		list all employees whose name contains amma
+
+send request: http://127.0.0.1:8000/api/?ename=amma
+http://127.0.0.1:8000/api/?ename=mma
+http://127.0.0.1:8000/api/?ename=nan
+
+To implement create operation
+create APIView
+
+http://127.0.0.1:8000/api/ 
+
+Retrieve Operation:
+to get a particular record(detail operation)
+
+RetrieveAPIView -- class
+
+http://127.0.0.1:8000/api/10/
+
+change pk as id in urls.py
+AssertionError at /api/14/
+Expected view EmployeeRetrieveAPIView to be called with a URL keyword argument named "pk". Fix your URL conf, or set 
+the `.lookup_field` attribute on the view correctly.
+
+http://127.0.0.1:8000/api/14/
+
+Update Operations:
+UpdateAPIView
+
+http://127.0.0.1:8000/api/14/ -- to update entire record
+
+http://127.0.0.1:8000/api/14/ -- to use patch -- go to raw data and pass the data as below and check in DB
+{    
+    "esal": 190000.0   
+}
+
+Destroy Operation:
+DestroyAPIView
+
+http://127.0.0.1:8000/api/14/
+
+
+upto now we done with:
+APIView
+
+ListAPIView
+CreateAPIView
+
+RetrieveAPIView
+UpdateAPIView
+DestroyAPIView
+
+Implement both List and Create Simultaneously:
+ListCreateAPIView
+
+http://127.0.0.1:8000/api/
+
+RetrieveUpdateAPIView
+
+Implementing retrieve and destroy operations
+RetrieveDestroyAPIView
+
+http://127.0.0.1:8000/api/17/
+
+Implement retrieve,update and destroy:
+RetrieveUpdateDestroyAPIView
+
+http://127.0.0.1:8000/api/
+http://127.0.0.1:8000/api/10/
+
+Implementing all CRUD operations using 2-end points
+path('api/',views.EmployeeListCreateAPIView.as_view()),
+path('api/<int:id>/',views.EmployeeRetrieveUpdateDestroyAPIView.as_view()),
+
+APIView
+ListAPIView,
+CreateAPIView,
+RetrieveAPIView,
+UpdateAPIView,
+DestroyAPIView,
+ListCreateAPIView,
+RetrieveUpdateAPIView,
+RetrieveDestroyAPIView,
+RetrieveUpdateDestroyAPIView
+
+Mixins:
+normal class meant for code resusability
+
+from rest_framework.mixins
+
+https://www.django-rest-framework.org/api-guide/generic-views/#mixins
+
+ListModelMixin
+CreateModelMixin
+RetrieveModelMixin
+UpdateModelMixin
+DestroyModelMixin
+
+ListModeMixin:
+To implement list operation(get method handler)
+list(request, *args, **kwargs)
+
+CreateModelMixin:
+to implement create operation
+for creating and saving new model instance (post method handler)
+create(request, *args, **kwargs)
+
+RetrieveModelMixin:
+to implement retrieve /detail operation(get method handler)
+retrieve(request, *args, **kwargs)
+
+UpdateModelMixin
+to implement update operation(both put and patch)
+update(request, *args, **kwargs)
+partial_update(request, *args, **kwargs)
+
+DestroyModelMixin
+to implement destroy operation(delete method handler)
+destroy(request, *args, **kwargs)
+
+http://127.0.0.1:8000/api/
+http://127.0.0.1:8000/api/20/
+
+
+C:\Users\abc\Desktop\django\restapi\firstproject\firstapp\models.py
+from django.db import models
+
+# Create your models here.
+class Employee(models.Model):
+    eno=models.IntegerField()
+    ename=models.CharField(max_length=30)
+    esal=models.FloatField()
+    eaddr=models.CharField(max_length=30)
+
+C:\Users\abc\Desktop\django\restapi\firstproject\firstapp\admin.py
+from django.contrib import admin
+from firstapp.models import Employee
+
+# Register your models here
+class EmployeeAdmin(admin.ModelAdmin):
+    list_display=['pk','id','eno','ename','esal','eaddr']
+admin.site.register(Employee,EmployeeAdmin)
+
+C:\Users\abc\Desktop\django\restapi\firstproject\firstapp\serializers.py
+from rest_framework import serializers
+from firstapp.models import Employee
+
+class EmployeeSerializer(serializers.ModelSerializer):
+    class Meta:
+        model=Employee
+        fields='__all__'
+
+C:\Users\abc\Desktop\django\restapi\firstproject\firstapp\views.py
+from django.shortcuts import render 
+from rest_framework.views import APIView
+from firstapp.models import Employee
+from firstapp.serializers import EmployeeSerializer
+from rest_framework.response import Response
+from rest_framework.generics import ListAPIView,CreateAPIView,RetrieveAPIView,UpdateAPIView,DestroyAPIView,ListCreateAPIView,RetrieveUpdateAPIView,RetrieveDestroyAPIView,RetrieveUpdateDestroyAPIView
+
+# Create your views here.
+# class EmployeeListAPIView(APIView):
+#     def get(self,request,format=None):
+#         qs=Employee.objects.all()
+#         serializer=EmployeeSerializer(qs,many=True)
+#         return Response(serializer.data)
+
+class EmployeeListAPIView(ListAPIView):
+    # queryset=Employee.objects.all() # variables queryset and serializer_class names are fixed
+    serializer_class=EmployeeSerializer
+    def get_queryset(self):
+        qs=Employee.objects.all()
+        name=self.request.GET.get('ename')
+        if name is not None:
+            qs=qs.filter(ename__icontains=name)
+            return qs
+        
+class EmployeeCreateAPIView(CreateAPIView):
+    queryset=Employee.objects.all()
+    serializer_class=EmployeeSerializer
+
+class EmployeeRetrieveAPIView(RetrieveAPIView):
+    queryset=Employee.objects.all()
+    serializer_class=EmployeeSerializer
+    lookup_field='id'
+
+class EmployeeUpdateAPIView(UpdateAPIView):
+    queryset=Employee.objects.all()
+    serializer_class=EmployeeSerializer
+    lookup_field='id'
+
+class EmployeeDestroyAPIView(DestroyAPIView):
+    queryset=Employee.objects.all()
+    serializer_class=EmployeeSerializer
+    lookup_field='id'
+
+class EmployeeListCreateAPIView(ListCreateAPIView):
+    queryset=Employee.objects.all()
+    serializer_class=EmployeeSerializer
+
+class EmployeeRetrieveUpdateAPIView(RetrieveUpdateAPIView):
+    queryset=Employee.objects.all()
+    serializer_class=EmployeeSerializer
+    lookup_field='id'
+
+class EmployeeRetrieveDestroyAPIView(RetrieveDestroyAPIView):
+    queryset=Employee.objects.all()
+    serializer_class=EmployeeSerializer
+    lookup_field='id'
+
+class EmployeeRetrieveUpdateDestroyAPIView(RetrieveUpdateDestroyAPIView):
+    queryset=Employee.objects.all()
+    serializer_class=EmployeeSerializer
+    lookup_field='id'
+    
+from rest_framework import mixins
+class EmployeeListCreateModelMixin(mixins.CreateModelMixin,ListAPIView):
+    queryset=Employee.objects.all()
+    serializer_class=EmployeeSerializer
+    def post(self,request,*args,**kwargs):
+        return self.create(request,*args,**kwargs)
+
+class EmployeeRetrieveUpdateDestroyModelMixin(mixins.UpdateModelMixin,mixins.DestroyModelMixin,RetrieveAPIView):
+    queryset=Employee.objects.all()
+    serializer_class=EmployeeSerializer
+    def put(self,request,*args,**kwargs):
+        return self.update(request,*args,**kwargs)
+    
+    def patch(self,request,*args,**kwargs):
+        return self.partial_update(request,*args,**kwargs)
+    
+    def delete(self,request,*args,**kwargs):
+        return self.destroy(request,*args,**kwargs)
+    
+
+C:\Users\abc\Desktop\django\restapi\firstproject\firstproject\urls.py
+from django.contrib import admin
+from django.urls import path,include
+from firstapp import views
+
+urlpatterns = [
+    path('admin/', admin.site.urls),
+    # path('api/',views.EmployeeListAPIView.as_view()),
+    # path('api/',views.EmployeeListCreateAPIView.as_view()),
+    # path('api/',views.EmployeeCreateAPIView.as_view()),
+    path('api/',views.EmployeeListCreateModelMixin.as_view()),
+    # path('api/<int:pk>/',views.EmployeeRetrieveAPIView.as_view()),
+    # path('api/<int:id>/',views.EmployeeRetrieveAPIView.as_view()),
+    # path('api/<int:id>/',views.EmployeeRetrieveUpdateAPIView.as_view()),
+    # path('api/<int:id>/',views.EmployeeUpdateAPIView.as_view()),
+    # path('api/<int:id>/',views.EmployeeDestroyAPIView.as_view()),
+    # path('api/<int:id>/',views.EmployeeRetrieveDestroyAPIView.as_view()),
+    # path('api/<int:id>/',views.EmployeeRetrieveUpdateDestroyAPIView.as_view()),
+    path('api/<int:pk>/',views.EmployeeRetrieveUpdateDestroyModelMixin.as_view()),
+]
+
+C:\Users\abc\Desktop\django\restapi\firstproject\firstapp\models.py
+from django.db import models
+
+# Create your models here.
+class Employee(models.Model):
+    eno=models.IntegerField()
+    ename=models.CharField(max_length=64)
+    esal=models.FloatField()
+    eaddr=models.CharField(max_length=64)
+
+C:\Users\abc\Desktop\django\restapi\firstproject\firstapp\admin.py
+from django.contrib import admin
+from firstapp.models import Employee
+
+# Register your models here
+class EmployeeAdmin(admin.ModelAdmin):
+    list_display=['pk','id','eno','ename','esal','eaddr']
+admin.site.register(Employee,EmployeeAdmin)
+
+C:\Users\abc\Desktop\django\restapi\firstproject\firstapp\serializers.py
+from rest_framework import serializers
+from firstapp.models import Employee
+
+class EmployeeSerializer(serializers.ModelSerializer):
+    class Meta:
+        model=Employee
+        fields='__all__'
+
+========================================
+Demo app for viewsets based on model
+
+C:\Users\abc\Desktop\django\restapi>django-admin startproject firstproject
+
+C:\Users\abc\Desktop\django\restapi>cd firstproject
+
+C:\Users\abc\Desktop\django\restapi\firstproject>py manage.py startapp firstapp
+
+add rest_framework and firstapp in settings.py
+
+C:\Users\abc\Desktop\django\restapi\firstproject\firstapp\models.py
+
+
+C:\Users\abc\Desktop\django\restapi\firstproject\firstapp\admin.py
+
+
+makemigrations and migrate
+
+create super user
+
+
+C:\Users\abc\Desktop\django\restapi\firstproject\firstapp\serializers.py
+
+http://127.0.0.1:8000/
+http://127.0.0.1:8000/api/21/
+
+API functionality testing using POSTMAN:
+https://dl-agent.pstmn.io/download/latest/win64?deviceId=2eaf1ee4-43ae-4fdf-b586-ec2453840c88
+
+in postman
+
+PATCH http://127.0.0.1:8000/api/22/ SEND -- in body -- form data
+Key ename	value sai charan
+
+C:\Users\abc\Desktop\django\restapi\firstproject\firstapp\models.py
+from django.db import models
+
+# Create your models here.
+class Employee(models.Model):
+    eno=models.IntegerField()
+    ename=models.CharField(max_length=64)
+    esal=models.FloatField()
+    eaddr=models.CharField(max_length=64)
+-------
+C:\Users\abc\Desktop\django\restapi\firstproject\firstapp\admin.py
+from django.contrib import admin
+from firstapp.models import Employee
+
+# Register your models here
+class EmployeeAdmin(admin.ModelAdmin):
+    list_display=['pk','id','eno','ename','esal','eaddr']
+admin.site.register(Employee,EmployeeAdmin)
+----------
+C:\Users\abc\Desktop\django\restapi\firstproject\firstapp\views.py
+from django.shortcuts import render 
+from firstapp.models import Employee
+from rest_framework.viewsets import ModelViewSet
+from firstapp.serializers import EmployeeSerializer
+
+# Create your views here.
+class EmployeeCRUDCBV(ModelViewSet):
+    queryset=Employee.objects.all()
+    serializer_class=EmployeeSerializer
+--------
+C:\Users\abc\Desktop\django\restapi\firstproject\firstapp\serializers.py
+from rest_framework.serializers import ModelSerializer
+from firstapp.models import Employee
+
+class EmployeeSerializer(ModelSerializer):
+    class Meta:
+        model=Employee
+        fields='__all__'
+---------
+C:\Users\abc\Desktop\django\restapi\firstproject\firstproject\urls.py
+from django.contrib import admin
+from django.urls import path,include
+from firstapp import views
+
+from rest_framework.routers import DefaultRouter
+router=DefaultRouter()
+router.register('api',views.EmployeeCRUDCBV)
+
+urlpatterns = [
+    path('admin/', admin.site.urls),
+    path('', include(router.urls)),
+]
+=========================================
+Authentication and Authorization
+
+Authentication: the process of validating user is called authentication
+username and password
+tokens
+
+DRF provides several built in authentication mechanisms
+
+Basic Authentication
+Session
+Token
+JWT(Json Web Token) Authentication
+
+Authorization: the process of validating access permission of user
+
+after authentication, we have to perform authorization
+
+DRF Permission Classes:
+AllowAny
+IsAuthenticated
+IsAdminUser
+DjangoModelPermission
+DjnagoModelPermissionsOrAnonReadOnly
+
+READ Operations: GET,OPTIONS,HEAD --SAFE METHODS
+WRITE Operations: POST,PUT,PATCH,DELETE
+
+Token Authentication:
+can be performed by some token
+
+token must be generated
+token must be validated
+
+include 'rest_framework.authtoken' app in settings.py
+tokens table
+
+INSTALLED_APPS = [
+    'django.contrib.admin',
+    'django.contrib.auth',
+    'django.contrib.contenttypes',
+    'django.contrib.sessions',
+    'django.contrib.messages',
+    'django.contrib.staticfiles',
+    'firstapp',
+    'rest_framework',
+    'rest_framework.authtoken'
+]
+
+run server
+
+C:\Users\abc\Desktop\django\restapi\firstproject>py manage.py migrate
+Operations to perform:
+  Apply all migrations: admin, auth, authtoken, contenttypes, firstapp, sessions
+Running migrations:
+  Applying authtoken.0001_initial... OK
+  Applying authtoken.0002_auto_20160226_1747... OK
+  Applying authtoken.0003_tokenproxy... OK
+  Applying authtoken.0004_alter_tokenproxy_options... OK
+
+go to http://127.0.0.1:8000/admin/
+then go to tokens and add token then select user abc
+
+b936cb623d995fd7f6cc79d9a91ddb81a8360232
+
+then create another user without token cde@123
+
+C:\Users\abc\Desktop\django\restapi\firstproject\firstproject\urls.py
+
+
+C:\Users\abc\Desktop\django\restapi\firstproject>http POST  http://127.0.0.1:8000/get-api-token/ username="abc" password="1234"
+HTTP/1.1 200 OK
+Allow: POST, OPTIONS
+Content-Length: 52
+Content-Type: application/json
+Cross-Origin-Opener-Policy: same-origin
+Date: Mon, 24 Mar 2025 11:08:43 GMT
+Referrer-Policy: same-origin
+Server: WSGIServer/0.2 CPython/3.12.4
+Vary: Cookie
+X-Content-Type-Options: nosniff
+X-Frame-Options: DENY
+
+{
+    "token": "b936cb623d995fd7f6cc79d9a91ddb81a8360232"
+}
+
+authtoekn app can validate this uname and pwd
+authtoken app will check whether token already generated for this user or not?
+authtoken app can validate for this user, then existing token will be returned
+if the token is not generated, then the new token will be created and stored in tokens table and send the response
+
+for the below user only exist, there is no token, it will generate
+C:\Users\abc\Desktop\django\restapi\firstproject>http POST  http://127.0.0.1:8000/get-api-token/ username="cde@123" password="mouni@123"
+HTTP/1.1 200 OK
+Allow: POST, OPTIONS
+Content-Length: 52
+Content-Type: application/json
+Cross-Origin-Opener-Policy: same-origin
+Date: Mon, 24 Mar 2025 11:31:50 GMT
+Referrer-Policy: same-origin
+Server: WSGIServer/0.2 CPython/3.12.4
+Vary: Cookie
+X-Content-Type-Options: nosniff
+X-Frame-Options: DENY
+
+{
+    "token": "5bcfe79a15a4e2cb2c0b2f9a613747a3ddd47d8c"
+}
+
+In postman
+
+POST	http://127.0.0.1:8000/get-api-token/	SEND
+
+key		value
+username	1234
+
+{
+    "token": "b936cb623d995fd7f6cc79d9a91ddb81a8360232"
+}
+
+How to enable Authentication and Authorization(permission) for our view class/endpoint
+
+C:\Users\abc\Desktop\django\restapi\firstproject>http http://127.0.0.1:8000/api/
+HTTP/1.1 401 Unauthorized
+Allow: GET, POST, HEAD, OPTIONS
+Content-Length: 58
+Content-Type: application/json
+Cross-Origin-Opener-Policy: same-origin
+Date: Mon, 24 Mar 2025 12:04:38 GMT
+Referrer-Policy: same-origin
+Server: WSGIServer/0.2 CPython/3.12.4
+Vary: Accept
+WWW-Authenticate: Token
+X-Content-Type-Options: nosniff
+X-Frame-Options: DENY
+
+{
+    "detail": "Authentication credentials were not provided."
+}
+
+POSTMAN: similarly we will get same as above
+
+how to send valid request:
+C:\Users\abc\Desktop\django\restapi\firstproject>http http://127.0.0.1:8000/api/ "authorization:Token b936cb623d995fd7f6cc79d9a91ddb81a8360232"
+HTTP/1.1 200 OK
+Allow: GET, POST, HEAD, OPTIONS
+Content-Length: 214
+Content-Type: application/json
+Cross-Origin-Opener-Policy: same-origin
+Date: Mon, 24 Mar 2025 12:07:36 GMT
+Referrer-Policy: same-origin
+Server: WSGIServer/0.2 CPython/3.12.4
+Vary: Accept
+X-Content-Type-Options: nosniff
+X-Frame-Options: DENY
+
+[
+    {
+        "eaddr": "Guntur",
+        "ename": "sai",
+        "eno": 101,
+        "esal": 89000.0,
+        "id": 23
+    },
+    {
+        "eaddr": "hyderabad",
+        "ename": "sai charan",
+        "eno": 102,
+        "esal": 105000.0,
+        "id": 24
+    },
+    
+]
+
+in POSTMAN
+GET	http://127.0.0.1:8000/api	SEND
+in headers because it need authorization(need to add token),if we dont have token then in body(uname&pwd) but for post body we need to select
+
+key			value
+Authorization		Token http://127.0.0.1:8000/api
+
+Global authentication to all CBVs
+in settings.py
+
+REST_FRAMEWORK={
+    'DEFAULT_AUTHENTICATION_CLASSES':('rest_framework.authentication.TokenAuthentication',),
+    'DEFAULT_PERMISSION_CLASSES':('rest_framework.permissions.IsAuthenticated',),
+}
+
+AUTH_PASSWORD_VALIDATORS = [
+
+IsAuthenticated:
+	only authenticated users can access end point
+	registered users
+
+AllowAny:
+	if multiple CBVs/end points are available, we get global restriction to all end points, if any one endpoint we dont need 
+	restriction, then we use AllowAny to that particular endpoint
+
+IaAdminUser:
+superuser -- to make user as super user then select staff status
+	
+when i am giving cde@123 wit pwd and token
+{
+    "detail": "You do not have permission to perform this action."
+}
+
+IsAuthenticatedOrReadOnly: (mostly used in real time ex: IRCTC,BookMyshow)
+Readonly:GET
+Write operations: PUT,POST,PATCH,DELETE
+
+DjnagoModelPermissions:
+to access endpoint-- authentication must be required(token)
+GET -- Authentication is enough, model permission not required
+POST,PUT,PATCH,DELETE -- Authentication+Model Permission
+
+POST -- add model permission
+PUT,PATCH -- change model permission (go to admin panel user permissions section of that particular user, select firstapp/employee/can change employee)
+DELETE -- delete model permission
+
+{
+    "detail": "Method \"POST\" not allowed."
+}
+
+DjangoModelPermissionsOrAnonReadOnly:
+GET: anyone can send get request
+
+send request GET without token, we will get all records
+
+send PATCH request without token not allowed (Authentication+Model permission)
+
+C:\Users\abc\Desktop\django\restapi\firstproject\firstapp\views.py
+from django.shortcuts import render 
+from firstapp.models import Employee
+from rest_framework.viewsets import ModelViewSet
+from firstapp.serializers import EmployeeSerializer
+from rest_framework.permissions import IsAuthenticated,AllowAny,IsAdminUser,IsAuthenticatedOrReadOnly,DjangoModelPermissions
+from rest_framework.authentication import TokenAuthentication
+
+# Create your views here.
+class EmployeeCRUDCBV(ModelViewSet):
+    queryset=Employee.objects.all()
+    serializer_class=EmployeeSerializer
+    authentication_classes=[TokenAuthentication]
+    # permission_classes=[IsAuthenticated]
+    # permission_classes=[AllowAny]
+    # permission_classes=[IsAdminUser]
+    # permission_classes=[IsAuthenticatedOrReadOnly]
+    permission_classes=[DjangoModelPermissions]
+
+C:\Users\abc\Desktop\django\restapi\firstproject\firstproject\urls.py
+from django.contrib import admin
+from django.urls import path,include
+from firstapp import views as v1
+
+from rest_framework.routers import DefaultRouter
+from rest_framework.authtoken import views as v2
+router=DefaultRouter()
+router.register('api',v1.EmployeeCRUDCBV)
+
+urlpatterns = [
+    path('admin/', admin.site.urls),
+    path('', include(router.urls)),
+    path('get-api-token/', v2.obtain_auth_token,name='get-api-token'),
+]
+
+C:\Users\abc\Desktop\django\restapi\firstproject\firstproject\settings.py
+REST_FRAMEWORK={
+    'DEFAULT_AUTHENTICATION_CLASSES':('rest_framework.authentication.TokenAuthentication',),
+    'DEFAULT_PERMISSION_CLASSES':('rest_framework.permissions.IsAuthenticated',),
+}
+============================
+
+
+
+
+
 
 
 

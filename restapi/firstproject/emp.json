@@ -1,0 +1,22 @@
+[
+{
+    "model": "firstapp.employee",
+    "pk": 1,
+    "fields": {
+        "eno": 101,
+        "ename": "sai",
+        "esal": 150000.0,
+        "eaddr": "guntur"
+    }
+},
+{
+    "model": "firstapp.employee",
+    "pk": 2,
+    "fields": {
+        "eno": 102,
+        "ename": "surekha siri",
+        "esal": 110000.0,
+        "eaddr": "hyderabad"
+    }
+}
+]

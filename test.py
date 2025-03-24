@@ -1,6 +1,5 @@
-import requests
-r=requests.get('https://jsonplaceholder.typicode.com/todos/1')
-data=r.json()
-# print(type(data))
-# print(data['title'])
-# print(data['id'])
+num = int(input("Enter a number: "))
+if num % 2 == 0:
+    print(f"{num} is Even")
+else:
+    print(f"{num} is Odd")

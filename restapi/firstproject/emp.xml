@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<django-objects version="1.0">
+    <object model="firstapp.employee" pk="1">
+        <field name="eno" type="IntegerField">101</field>
+        <field name="ename" type="CharField">sai</field>
+        <field name="esal" type="FloatField">150000.0</field>
+        <field name="eaddr" type="CharField">guntur</field>
+    </object>
+    <object model="firstapp.employee" pk="2">
+        <field name="eno" type="IntegerField">102</field>
+        <field name="ename" type="CharField">surekha siri</field>
+        <field name="esal" type="FloatField">110000.0</field>
+        <field name="eaddr" type="CharField">hyderabad</field>
+    </object>
+</django-objects>
