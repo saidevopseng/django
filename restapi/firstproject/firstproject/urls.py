@@ -16,16 +16,14 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path,include
-from firstapp import views as v1
-
 from rest_framework.routers import DefaultRouter
-from rest_framework.authtoken import views as v2
+from firstapp import views
 router=DefaultRouter()
-router.register('api',v1.EmployeeCRUDCBV)
+router.register('api',views.EmployeeCrudCBV)
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('', include(router.urls)),
-    path('get-api-token/', v2.obtain_auth_token,name='get-api-token'),
+    path('',include(router.urls)),
+    path('accounts/',include('django.contrib.auth.urls')),
 ]
 

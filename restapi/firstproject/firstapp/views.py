@@ -1,18 +1,14 @@
 from django.shortcuts import render 
+from rest_framework import viewsets
 from firstapp.models import Employee
-from rest_framework.viewsets import ModelViewSet
 from firstapp.serializers import EmployeeSerializer
-from rest_framework.permissions import IsAuthenticated,AllowAny,IsAdminUser,IsAuthenticatedOrReadOnly,DjangoModelPermissions
-from rest_framework.authentication import TokenAuthentication
+from rest_framework.authentication import BasicAuthentication,SessionAuthentication
+from rest_framework.permissions import IsAuthenticated
 
-# Create your views here.
-class EmployeeCRUDCBV(ModelViewSet):
+# create your views here
+class EmployeeCrudCBV(viewsets.ModelViewSet):
     queryset=Employee.objects.all()
     serializer_class=EmployeeSerializer
-    authentication_classes=[TokenAuthentication]
-    # permission_classes=[IsAuthenticated]
-    # permission_classes=[AllowAny]
-    # permission_classes=[IsAdminUser]
-    # permission_classes=[IsAuthenticatedOrReadOnly]
-    permission_classes=[DjangoModelPermissions]
-
+    # authentication_classes=[BasicAuthentication]
+    authentication_classes=[SessionAuthentication]
+    permission_classes=[IsAuthenticated]

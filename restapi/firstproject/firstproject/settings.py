@@ -14,7 +14,7 @@ from pathlib import Path
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
-
+TEMPLATE_DIR=BASE_DIR/'templates'
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/5.1/howto/deployment/checklist/
@@ -39,7 +39,8 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'firstapp',
     'rest_framework',
-    'rest_framework.authtoken'
+    # 'rest_framework.authtoken',
+    # rest_framework_jwt,
 ]
 
 MIDDLEWARE = [
@@ -57,7 +58,7 @@ ROOT_URLCONF = 'firstproject.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': [TEMPLATE_DIR],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -87,10 +88,37 @@ DATABASES = {
 # Password validation
 # https://docs.djangoproject.com/en/5.1/ref/settings/#auth-password-validators
 
-REST_FRAMEWORK={
-    'DEFAULT_AUTHENTICATION_CLASSES':('rest_framework.authentication.TokenAuthentication',),
-    'DEFAULT_PERMISSION_CLASSES':('rest_framework.permissions.IsAuthenticated',),
+# REST_FRAMEWORK={
+#     'DEFAULT_AUTHENTICATION_CLASSES':('rest_framework.authentication.TokenAuthentication',),
+#     'DEFAULT_PERMISSION_CLASSES':('rest_framework.permissions.IsAuthenticated',),
+# }
+
+REST_FRAMEWORK = {
+    'DEFAULT_AUTHENTICATION_CLASSES': (
+        'rest_framework_simplejwt.authentication.JWTAuthentication',
+    ),
 }
+
+# REST_FRAMEWORK = {
+#     'DEFAULT_AUTHENTICATION_CLASSES': (
+#         'rest_framework.authentication.TokenAuthentication',  # Keep token authentication
+#         'rest_framework_simplejwt.authentication.JWTAuthentication',  # Add JWT authentication
+#     ),
+#     'DEFAULT_PERMISSION_CLASSES': (
+#         'rest_framework.permissions.IsAuthenticated',
+#     ),
+# }
+
+REST_FRAMEWORK = {
+    'DEFAULT_AUTHENTICATION_CLASSES': (
+        'rest_framework.authentication.SessionAuthentication',  # Use Session Authentication
+        'rest_framework.authentication.BasicAuthentication',  # Optional, for testing via API
+    ),
+    'DEFAULT_PERMISSION_CLASSES': (
+        'rest_framework.permissions.IsAuthenticated',
+    ),
+}
+
 
 AUTH_PASSWORD_VALIDATORS = [
     {
@@ -124,6 +152,15 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/5.1/howto/static-files/
 
 STATIC_URL = 'static/'
+# REST_FRAMEWORK={
+# 'DEFAULT_PAGINATION_CLASS':'rest_framework.pagination.PageNumberPagination',
+# 'PAGE_SIZE':10,
+# 'DEFAULT_FILTER_BACKENDS':('rest_framework.filters.SearchFilter','rest_framework.filters.OrderingFilter'),
+# 'SEARCH_PARAM':'mysearch',
+# 'ORDERING_PARAM':'myordering',
+# }
+
+LOGIN_REDIRECT_URL='/api/'
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.1/ref/settings/#default-auto-field
